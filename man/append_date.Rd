@@ -15,8 +15,7 @@ A modified string filepath with the date added (just before the
 file extension at the end).
 }
 \description{
-The date is appended at the end of the file name, just before the file
-extension.
+Append today's date to the end of a file path
 }
 \examples{
 
