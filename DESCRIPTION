@@ -9,3 +9,7 @@ License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Imports: 
+    huxtable (>= 5.5.2),
+    magrittr,
+    openxlsx (>= 4.2.5.2)
