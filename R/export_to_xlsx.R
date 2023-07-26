@@ -51,12 +51,13 @@
 #'   tbl_regression(exponentiate = TRUE)
 #'
 #' # Create an output workbook
-#' path <- 'my_output.xlsx'
+#' path <- tempfile(fileext = 'xlsx')
 #' gtsummary_to_xlsx(tbl_1, path, sheet_name = FALSE, overwrite = FALSE)
 #'
 #' # Add an additional table to that same path, with overwrite = TRUE
 #' gtsummary_to_xlsx(tbl_2, path, sheet_name = FALSE, overwrite = TRUE)
-
+#'
+#' file.remove(path)
 gtsummary_to_xlsx <- function(gtsummary_tbl, path, sheet_name, add_date = TRUE, overwrite = FALSE) {
 
 
@@ -66,7 +67,6 @@ gtsummary_to_xlsx <- function(gtsummary_tbl, path, sheet_name, add_date = TRUE, 
     path <- path %>%
       append_date()
   }
-
 
   if(!file.exists(path)){
     output_wb <- openxlsx::createWorkbook(creator = 'user')
