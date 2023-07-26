@@ -6,7 +6,7 @@
 \usage{
 gtsummary_to_xlsx(
   gtsummary_tbl,
-  wb_path,
+  path,
   sheet_name,
   add_date = TRUE,
   overwrite = FALSE
@@ -15,7 +15,7 @@ gtsummary_to_xlsx(
 \arguments{
 \item{gtsummary_tbl}{A table created with the \code{gtsummary} package.}
 
-\item{wb_path}{Path to the .xlsx document. If it does not yet exist, it will
+\item{path}{Path to the .xlsx document. If it does not yet exist, it will
 be created.}
 
 \item{sheet_name}{Name of the sheet this table will receive, once entered
@@ -30,7 +30,7 @@ reason, if the user truly wants the convenience, the need to declare it
 explicitly by setting this param to \code{FALSE}.}
 
 \item{add_date}{If \code{TRUE}, a date be appended to the end of the file
-name (\code{wb_path}) before export. For example, 'my_path.xlsx' will become
+name (\code{path}) before export. For example, 'my_path.xlsx' will become
 something like 'my_path_2020_01_25.xlsx' (using Sys.Date() for today's date).}
 
 \item{overwrite}{If \code{TRUE}, existing file will be overwritten by
@@ -68,9 +68,9 @@ tbl_2 <- fit \%>\%
   tbl_regression(exponentiate = TRUE)
 
 # Create an output workbook
-wb_path = 'my_output.xlsx'
-gtsummary_to_xlsx(tbl_1, wb_path, sheet_name = FALSE, overwrite = FALSE)
+path <- 'my_output.xlsx'
+gtsummary_to_xlsx(tbl_1, path, sheet_name = FALSE, overwrite = FALSE)
 
 # Add an additional table to that same path, with overwrite = TRUE
-gtsummary_to_xlsx(tbl_2, wb_path, sheet_name = FALSE, overwrite = TRUE)
+gtsummary_to_xlsx(tbl_2, path, sheet_name = FALSE, overwrite = TRUE)
 }
