@@ -64,7 +64,7 @@ gtsummary_to_xlsx <- function(gtsummary_tbl, path, sheet_name, add_date = TRUE, 
 
   if(add_date){
     path <- path %>%
-      stringr::str_replace('.xlsx', glue::glue('_{Sys.Date()}.xlsx'))
+      append_date()
   }
 
 
