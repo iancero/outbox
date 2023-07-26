@@ -4,7 +4,7 @@
 #' document, using the \code{huxtable} and \code{openxlsx} libraries.
 #'
 #' @param gtsummary_tbl A table created with the \code{gtsummary} package.
-#' @param wb_path Path to the .xlsx document. If it does not yet exist, it will
+#' @param path Path to the .xlsx document. If it does not yet exist, it will
 #' be created.
 #' @param sheet_name Name of the sheet this table will receive, once entered
 #' into the \code{.xlsx} document. If \code{FALSE}, it will be labelled by its
@@ -17,7 +17,7 @@
 #' reason, if the user truly wants the convenience, the need to declare it
 #' explicitly by setting this param to \code{FALSE}.
 #' @param add_date If \code{TRUE}, a date be appended to the end of the file
-#' name (\code{wb_path}) before export. For example, 'my_path.xlsx' will become
+#' name (\code{path}) before export. For example, 'my_path.xlsx' will become
 #' something like 'my_path_2020_01_25.xlsx' (using Sys.Date() for today's date).
 #' @param overwrite If \code{TRUE}, existing file will be overwritten by
 #' openxlsx::saveWorkbook() - which does the exportation already under the hood.
@@ -51,24 +51,27 @@
 #'   tbl_regression(exponentiate = TRUE)
 #'
 #' # Create an output workbook
-#' wb_path = 'my_output.xlsx'
-#' gtsummary_to_xlsx(tbl_1, wb_path, sheet_name = FALSE, overwrite = FALSE)
+#' path <- 'my_output.xlsx'
+#' gtsummary_to_xlsx(tbl_1, path, sheet_name = FALSE, overwrite = FALSE)
 #'
 #' # Add an additional table to that same path, with overwrite = TRUE
-#' gtsummary_to_xlsx(tbl_2, wb_path, sheet_name = FALSE, overwrite = TRUE)
+#' gtsummary_to_xlsx(tbl_2, path, sheet_name = FALSE, overwrite = TRUE)
 
-gtsummary_to_xlsx <- function(gtsummary_tbl, wb_path, sheet_name, add_date = TRUE, overwrite = FALSE) {
+gtsummary_to_xlsx <- function(gtsummary_tbl, path, sheet_name, add_date = TRUE, overwrite = FALSE) {
+
+
+  # TODO: what if there is already a sheet named X?
 
   if(add_date){
-    wb_path <- wb_path %>%
+    path <- path %>%
       stringr::str_replace('.xlsx', glue::glue('_{Sys.Date()}.xlsx'))
   }
 
 
-  if(!file.exists(wb_path)){
+  if(!file.exists(path)){
     output_wb <- openxlsx::createWorkbook(creator = 'user')
   } else {
-    output_wb <- openxlsx::loadWorkbook(wb_path)
+    output_wb <- openxlsx::loadWorkbook(path)
   }
 
   if(sheet_name == F){
@@ -84,7 +87,7 @@ gtsummary_to_xlsx <- function(gtsummary_tbl, wb_path, sheet_name, add_date = TRU
     sheet = sheet_name,
     write_caption = T)
 
-  openxlsx::saveWorkbook(output_wb, file = wb_path, overwrite = overwrite)
+  openxlsx::saveWorkbook(output_wb, file = path, overwrite = overwrite)
 
   invisible(gtsummary_tbl)
 }
