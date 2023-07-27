@@ -1,12 +1,51 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# outbox
+# Outbox
 
 <!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of outbox is to …
+The `outbox` package provides basic wrapper functions to standardize the
+syntax and workflow across some common output classes and output file
+formats in R.
+
+This standardization and streamlining is inspired by two major problems
+in the existing eco-system: 1. Although many analysis classes/packages
+already have reliable mechanisms for exportation, they are collectively
+inconsistent from function to function and package to package (e.g.,
+different exportation pipelines, different export function parameters).
+For example, as of this writing, `gtsummary` uses `flextable` to export
+tables to `.docx` files and `huxtable` to export those same tables to
+`.xlsx` files. This is a good choice, resulting in high quality output
+to both sources, but creates a variable workflow across the two types of
+output. Although most differences are small, they build up
+multiplicatively (e.g., already 2 output classes \* 2 output filetypes =
+4 unique workflows). 2. Many packages offer only “one-shot” export
+functions that, for example, produce a one-page Word file containing
+exactly one figure. They lack built-in support for exporting several
+output objects to the same document - either sequentially or at the same
+time.
+
+The approach `outbox` takes to resolve these problems is to offer a
+single wrapper function `write_output()`, which is ready to receive
+multiple output classes and output file extensions.
+
+Currently, the supported output classes include: - `"gtsummary"` -
+`"ggplot"`
+
+Supported output file formats include: - `.xlsx` - `.docx`.
+
+**NOTE:** `outbox` has intentionally small aspirations. It’s goal is to
+standardize and streamline existing output infrastructure and provide
+only very basic convenience improvements (e.g., adding a time stamp
+output file names). It does not intend to do anything more than provide
+syntactic sugar to the existing packages that run underneath it. To
+maintain its role as a basic convenience wrapper package, it will not
+help wrangle output classes and it will not help format output.
 
 ## Installation
 
@@ -20,33 +59,42 @@ devtools::install_github("iancero/outbox")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The workhorse of the `outbox` package is `write_output()`, which can
+automatically detect the output class and output file type.
 
 ``` r
+library(gtsummary)
 library(outbox)
-## basic example code
+
+path <- tempfile(fileext = '.xlsx')
+
+tbl_1 <- trial %>%
+  tbl_summary(include = c(age, grade, response)) %>%
+  modify_caption('Table 1. Drug trial results')
+
+# starting with a blank output file (append = FALSE)
+write_output(tbl_1, path, label = 'Drug trial results', append = FALSE)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+It can then add additional tables to the end of the document created
+above.
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+fit <- glm(response ~ age + stage, trial, family = binomial)
+tbl_2 <- fit %>% 
+  tbl_regression(exponentiate = TRUE)
+
+write_output(tbl_2, path, label = 'Regression coefficients', append = TRUE)
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
+Plots are also supported using the same function call.
 
-You can also embed plots, for example:
+``` r
+library(ggplot2)
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+plt_1 <- ggplot(mpg, aes(displ, hwy, colour = class)) + 
+  geom_point()
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+write_output(plt_1, path, label = 'Regression coefficients', append = FALSE)
+#> Warning: Workbook does not contain any worksheets. A worksheet will be added.
+```
