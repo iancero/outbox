@@ -1,3 +1,5 @@
 ^outbox\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^test_dir$
+^practice\.Rmd$
