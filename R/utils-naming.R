@@ -1,5 +1,3 @@
-
-
 #' Append today's date to the end of a file path
 #'
 #' @param path The file path string (including file name and extension) to which the
@@ -21,3 +19,5 @@ append_date <- function(path) {
 
   path_with_date
 }
+
+
