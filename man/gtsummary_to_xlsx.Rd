@@ -18,16 +18,16 @@ gtsummary_to_xlsx(
 \item{path}{Path to the .xlsx document. If it does not yet exist, it will
 be created.}
 
-\item{sheet_name}{Name of the sheet this table will receive, once entered
-into the \code{.xlsx} document. If \code{FALSE}, it will be labelled by its
-sheet number in the resulting document (i.e., if the document already has
-two sheets, this new table's sheet name will be "Sheet 3"). Note, this param
-intentionally received no default, to make it difficult for the user to
-quickly dump a bunch of tables into a .xlsx document. Although this is easy
-to do at the time or export, it tends to make it much harder for the
-recipient to understand what is happening in a large document. For that
-reason, if the user truly wants the convenience, the need to declare it
-explicitly by setting this param to \code{FALSE}.}
+\item{sheet_name}{Unique (case INsensitive) name of the sheet this table will
+receive, once entered into the \code{.xlsx} document. If \code{FALSE}, it
+will be labelled by its sheet number in the resulting document (i.e., if the
+document already has two sheets, this new table's sheet name will be "Sheet
+3"). Note, this param intentionally received no default, to make it difficult
+for the user to quickly dump a bunch of tables into a .xlsx document.
+Although this is easy to do at the time or export, it tends to make it much
+harder for the recipient to understand what is happening in a large document.
+For that reason, if the user truly wants the convenience, the need to declare
+it explicitly by setting this param to \code{FALSE}.}
 
 \item{add_date}{If \code{TRUE}, a date be appended to the end of the file
 name (\code{path}) before export. For example, 'my_path.xlsx' will become
