@@ -19,10 +19,8 @@ create_docx <- function(path, toc = TRUE) {
 
 
 gtsummary_to_docx <- function(
-    gtsummary_tbl, path, label, add_date = TRUE, append = TRUE, toc = TRUE,
+    x, path, label, add_date = TRUE, append = TRUE, toc = TRUE,
     update_fields = FALSE) {
-
-  # TODO: change first argument to x (and in docs)
 
   if(add_date){
     path <- append_date(path)
@@ -44,8 +42,7 @@ gtsummary_to_docx <- function(
     label <- 'Table'
   }
 
-  flex_tbl <- gtsummary_tbl %>%
-    gtsummary::as_flex_table()
+  flex_tbl <- gtsummary::as_flex_table(x)
 
   word_doc <- word_doc %>%
     officer::body_add_break() %>%
@@ -61,17 +58,15 @@ gtsummary_to_docx <- function(
     doconv::docx_update(input = path)
   }
 
-  invisible(gtsummary_tbl)
+  invisible(x)
 }
 
 
 
 
 ggplot_to_docx <- function(
-    plt, path, label, add_date = TRUE, append = TRUE, toc = TRUE,
+    x, path, label, add_date = TRUE, append = TRUE, toc = TRUE,
     update_fields = FALSE, height = 5, width = 6, res = 300) {
-
-  # TODO: change first argument to x (and in docs)
 
   if(add_date){
     path <- append_date(path)
@@ -97,7 +92,7 @@ ggplot_to_docx <- function(
     officer::body_add_break() %>%
     officer::body_add_par(value = label, style = 'heading 1') %>%
     officer::body_add_gg(
-      value = plt,
+      value = x,
       width = width,
       height = height,
       res = res)
@@ -111,7 +106,7 @@ ggplot_to_docx <- function(
     doconv::docx_update(input = path)
   }
 
-  invisible(plt)
+  invisible(x)
 }
 
 

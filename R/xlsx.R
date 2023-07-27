@@ -18,10 +18,10 @@ create_xlsx <- function(path) {
 #' Takes a \code{gtsummary} table object and exports it to to a \code{.xlsx}
 #' document, using the \code{huxtable} and \code{openxlsx} libraries.
 #'
-#' @param gtsummary_tbl A table created with the \code{gtsummary} package.
+#' @param x A table created with the \code{gtsummary} package.
 #' @param path Path to the .xlsx document. If it does not yet exist, it will
 #' be created.
-#' @param sheet_name Unique (case INsensitive) name of the sheet this table will
+#' @param label Unique (case INsensitive) name of the sheet this table will
 #' receive, once entered into the \code{.xlsx} document. If \code{FALSE}, it
 #' will be labelled by its sheet number in the resulting document (i.e., if the
 #' document already has two sheets, this new table's sheet name will be "Sheet
@@ -47,10 +47,10 @@ create_xlsx <- function(path) {
 #' \code{gtsummary::as_hux_xlsx()} function. It's major contribution is a more
 #' convenient workflow, which allows you to have a single filepath that you can
 #' keep adding sheets to as an analysis (e.g., .Rmd document) expands. It also
-#' has some convenience arguments to enhance the workflow
+#' has some convenience arguments to enhance the workflow.
 #'
 #'
-#' @return (invisible) The original \code{gtsummary_tbl}
+#' @return (invisible) The original gtsummary table (\code{x}).
 #' @export
 #'
 #' @examples
@@ -67,22 +67,26 @@ create_xlsx <- function(path) {
 #'
 #' # Create an output workbook
 #' path <- tempfile(fileext = 'xlsx')
-#' gtsummary_to_xlsx(tbl_1, path, sheet_name = FALSE, overwrite = FALSE)
+#' gtsummary_to_xlsx(tbl_1, path, label = FALSE, overwrite = FALSE)
 #'
 #' # Add an additional table to that same path, with overwrite = TRUE
-#' gtsummary_to_xlsx(tbl_2, path, sheet_name = FALSE, overwrite = TRUE)
+#' gtsummary_to_xlsx(tbl_2, path, label = FALSE, overwrite = TRUE)
 #'
 #' file.remove(path)
 gtsummary_to_xlsx <- function(
-    gtsummary_tbl, path, sheet_name, add_date = TRUE, overwrite = FALSE) {
+    x, path, label, add_date = TRUE, append = TRUE) {
 
-  # TODO: change first argument to x (and in docs)
   # TODO: convert overwrite to append
-  # TODO: change sheet_name to label (and in docs)
 
   if(add_date){
     path <- path %>%
       append_date()
+  }
+
+  if(append == FALSE){
+    # delete existing file, so a new one can be created below
+    # if file doesn't exist, file.remove throws a warning, this is suppressed
+    suppressWarnings(file.remove(path))
   }
 
   if(!file.exists(path)){
@@ -91,22 +95,21 @@ gtsummary_to_xlsx <- function(
     output_wb <- openxlsx::loadWorkbook(path)
   }
 
-  if(sheet_name == F){
-    sheet_name <- paste('Sheet', length(output_wb$sheet_names) + 1)
+  if(label == F){
+    label <- paste('Sheet', length(output_wb$sheet_names) + 1)
   }
 
-  hux_tbl <- gtsummary_tbl %>%
-    gtsummary::as_hux_table()
+  hux_tbl <- gtsummary::as_hux_table(x)
 
   huxtable::as_Workbook(
     ht = hux_tbl,
     Workbook = output_wb,
-    sheet = sheet_name,
+    sheet = label,
     write_caption = T)
 
-  openxlsx::saveWorkbook(output_wb, file = path, overwrite = overwrite)
+  openxlsx::saveWorkbook(output_wb, file = path, overwrite = TRUE)
 
-  invisible(gtsummary_tbl)
+  invisible(x)
 }
 
 
@@ -116,10 +119,9 @@ gtsummary_to_xlsx <- function(
 
 
 ggplot_to_xlsx <- function(
-    plt, path, label, add_date = TRUE, append = FALSE, width = 6, height = 5, res = 300) {
+    x, path, label, add_date = TRUE, append = FALSE, width = 6, height = 5, res = 300) {
 
   # TODO: Add support for an image caption (in text, not the image)
-  # TODO: change first argument to x (and in docs)
 
   if(add_date){
     path <- append_date(path)
@@ -145,7 +147,7 @@ ggplot_to_xlsx <- function(
 
   # save a temporary image file and keep track of its path
   plt_file <- ggsave(
-    plot = plt,
+    plot = x,
     filename = tempfile(fileext = '.png'),
     width = width,
     height = height,
@@ -166,7 +168,7 @@ ggplot_to_xlsx <- function(
   # delete the temporary file
   file.remove(plt_file)
 
-  invisible(plt)
+  invisible(x)
 }
 
 
