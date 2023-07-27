@@ -19,19 +19,49 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The `outbox` package provides basic wrapper functions to standardize the syntax and workflow across some common output classes and output file formats in R. 
+The goal of this package is to provide a basic `outbox` for your data analysis workflow. 
 
-This standardization and streamlining is inspired by two major problems in the existing eco-system:
-1. Although many analysis classes/packages already have reliable mechanisms for exportation, they are collectively inconsistent from function to function and package to package (e.g., different exportation pipelines, different export function parameters). For example, as of this writing, `gtsummary` uses `flextable` to export tables to `.docx` files and `huxtable` to export those same tables to `.xlsx` files. This is a good choice, resulting in high quality output to both sources, but creates a variable workflow across the two types of output. Although most differences are small, they build up multiplicatively (e.g., already 2 output classes \* 2 output filetypes = 4 unique workflows).
-2. Many packages offer only "one-shot" export functions that, for example, produce a one-page Word file containing exactly one figure. They lack built-in support for exporting several output objects to the same document - either sequentially or at the same time.
+## The problem
+
+Analysis output (e.g., results tables, plots) are *born* in R / Rmd files, but they often need to *live* in more common file formats (e.g., `.docx`) shortly after they are created. Moreover, they typically need to live alongside several of their *sibling* plots and tables in the same output file.
+
+Although many analysis output classes and their associated packages already have reliable mechanisms for exporting an output object, these functions are variable from package to package (and sometimes within functions of the same package).
+
+For example, the excellent `gtsummary` package makes the thoughtful choice of using `flextable` to export tables to `.docx` files and `huxtable` to export those same tables to `.xlsx` files. This is a good choice that results in high quality output to both sources, but creates a variable workflow across the two types of output.^[To be fair to `gtsummary`, which is admittedly one of my own favorite packages, this is a cherry-picked example to demonstrate a point. Elsewhere in the package, it actually provides several additional output mechanisms too - many of which are helpfully similar from function to function.] 
+
+When we want to send an output table (`trial_tbl`) to an `.xlsx` document, only one step is required.
+
+```{r}
+library(gtsummary)
+
+trial_tbl <- trial |> 
+  tbl_summary()
+
+xlsx_path <- tempfile(fileext = '.xlsx')
+
+trial_tbl |>
+  gtsummary::as_hux_xlsx(file = xlsx_path)
+```
+
+In contrast, when we want to send the same table to a word document, we need two steps. We also need to work with a different argument for our target file (i.e., `file` for `.xlsx` vs `path` for `.docx`).
+
+```{r}
+docx_path <- tempfile(fileext = '.docx')
+
+trial_tbl |>
+  gtsummary::as_flex_table() |>
+  flextable::save_as_docx(path = docx_path)
+```
 
 The approach `outbox` takes to resolve these problems is to offer a single wrapper function `write_output()`, which is ready to receive multiple output classes and output file extensions.
 
 Currently, the supported output classes include: 
+
 - `"gtsummary"`
 - `"ggplot"` 
 
 Supported output file formats include:
+
 - `.xlsx`
 - `.docx`.
 
@@ -39,7 +69,7 @@ Supported output file formats include:
 
 ## Installation
 
-You can install the development version of outbox from [GitHub](https://github.com/) with:
+The `outbox` package is still in early development. You can install the development version of outbox from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
