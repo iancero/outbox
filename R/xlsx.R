@@ -87,7 +87,7 @@ ggplot_to_xlsx <- function(
   openxlsx::addWorksheet(wb = output_wb, sheetName = label)
 
   # save a temporary image file and keep track of its path
-  plt_file <- ggsave(
+  plt_file <- ggplot2::ggsave(
     plot = x,
     filename = tempfile(fileext = '.png'),
     width = width,
