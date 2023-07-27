@@ -1,3 +1,18 @@
+create_xlsx <- function(path) {
+  output_wb <- openxlsx::createWorkbook(creator = 'user')
+
+  # TODO: create default title sheet and add into document
+
+  openxlsx::saveWorkbook(output_wb, file = path, overwrite = TRUE)
+
+  invisible(output_wb)
+}
+
+
+
+
+
+
 #' Export a \code{gtsummary} table object to a \code{.xlsx} document
 #'
 #' Takes a \code{gtsummary} table object and exports it to to a \code{.xlsx}
@@ -6,16 +21,16 @@
 #' @param gtsummary_tbl A table created with the \code{gtsummary} package.
 #' @param path Path to the .xlsx document. If it does not yet exist, it will
 #' be created.
-#' @param sheet_name Name of the sheet this table will receive, once entered
-#' into the \code{.xlsx} document. If \code{FALSE}, it will be labelled by its
-#' sheet number in the resulting document (i.e., if the document already has
-#' two sheets, this new table's sheet name will be "Sheet 3"). Note, this param
-#' intentionally received no default, to make it difficult for the user to
-#' quickly dump a bunch of tables into a .xlsx document. Although this is easy
-#' to do at the time or export, it tends to make it much harder for the
-#' recipient to understand what is happening in a large document. For that
-#' reason, if the user truly wants the convenience, the need to declare it
-#' explicitly by setting this param to \code{FALSE}.
+#' @param sheet_name Unique (case INsensitive) name of the sheet this table will
+#' receive, once entered into the \code{.xlsx} document. If \code{FALSE}, it
+#' will be labelled by its sheet number in the resulting document (i.e., if the
+#' document already has two sheets, this new table's sheet name will be "Sheet
+#' 3"). Note, this param intentionally received no default, to make it difficult
+#' for the user to quickly dump a bunch of tables into a .xlsx document.
+#' Although this is easy to do at the time or export, it tends to make it much
+#' harder for the recipient to understand what is happening in a large document.
+#' For that reason, if the user truly wants the convenience, the need to declare
+#' it explicitly by setting this param to \code{FALSE}.
 #' @param add_date If \code{TRUE}, a date be appended to the end of the file
 #' name (\code{path}) before export. For example, 'my_path.xlsx' will become
 #' something like 'my_path_2020_01_25.xlsx' (using Sys.Date() for today's date).
@@ -58,10 +73,12 @@
 #' gtsummary_to_xlsx(tbl_2, path, sheet_name = FALSE, overwrite = TRUE)
 #'
 #' file.remove(path)
-gtsummary_to_xlsx <- function(gtsummary_tbl, path, sheet_name, add_date = TRUE, overwrite = FALSE) {
+gtsummary_to_xlsx <- function(
+    gtsummary_tbl, path, sheet_name, add_date = TRUE, overwrite = FALSE) {
 
-
-  # TODO: what if there is already a sheet named X?
+  # TODO: change first argument to x (and in docs)
+  # TODO: convert overwrite to append
+  # TODO: change sheet_name to label (and in docs)
 
   if(add_date){
     path <- path %>%
@@ -91,3 +108,66 @@ gtsummary_to_xlsx <- function(gtsummary_tbl, path, sheet_name, add_date = TRUE, 
 
   invisible(gtsummary_tbl)
 }
+
+
+
+
+
+
+
+ggplot_to_xlsx <- function(
+    plt, path, label, add_date = TRUE, append = FALSE, width = 6, height = 5, res = 300) {
+
+  # TODO: Add support for an image caption (in text, not the image)
+  # TODO: change first argument to x (and in docs)
+
+  if(add_date){
+    path <- append_date(path)
+  }
+
+  if(append == FALSE){
+    # delete existing file, so a new one can be created below
+    # if file doesn't exist, file.remove throws a warning, this is suppressed
+    suppressWarnings(file.remove(path))
+  }
+
+  if(file.exists(path) == FALSE){
+    output_wb <- create_xlsx(path)
+  } else {
+    output_wb <- openxlsx::loadWorkbook(path)
+  }
+
+  if(label == F){
+    label <- paste('Sheet', length(output_wb$sheet_names) + 1)
+  }
+
+  openxlsx::addWorksheet(wb = output_wb, sheetName = label)
+
+  # save a temporary image file and keep track of its path
+  plt_file <- ggsave(
+    plot = plt,
+    filename = tempfile(fileext = '.png'),
+    width = width,
+    height = height,
+    dpi = res)
+
+  # insert image into the newly created sheet (not compatible with %>%)
+  openxlsx::insertImage(
+    wb = output_wb,
+    file = plt_file,
+    sheet = label,
+    width = width,
+    height = height,
+    dpi = res)
+
+  # save active workbook file
+  openxlsx::saveWorkbook(output_wb, file = path, overwrite = TRUE)
+
+  # delete the temporary file
+  file.remove(plt_file)
+
+  invisible(plt)
+}
+
+
+
