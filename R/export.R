@@ -132,7 +132,8 @@ construct_output_function <- function(x, path){
 #' # add an additional table to that same path, with append = TRUE
 #' gtsummary_to_xlsx(tbl_1, path, label = FALSE, append = TRUE)
 #' @order 1
-write_output <- function(x, path, label, add_date = TRUE, append = TRUE, ...) {
+write_output <- function(x, path, label = FALSE, add_date = TRUE, append = TRUE,
+                         ...) {
   dot_args <- rlang::list2(...)
   output_func <- construct_output_function(x, path)
 

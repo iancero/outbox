@@ -19,7 +19,7 @@ create_docx <- function(path, toc = TRUE) {
 #' @rdname write_output
 #' @export
 gtsummary_to_docx <- function(
-    x, path, label, add_date = TRUE, append = TRUE, toc = TRUE,
+    x, path, label = FALSE, add_date = TRUE, append = TRUE, toc = TRUE,
     update_fields = FALSE) {
 
   if(add_date){
@@ -66,7 +66,7 @@ gtsummary_to_docx <- function(
 #' @rdname write_output
 #' @export
 ggplot_to_docx <- function(
-    x, path, label, add_date = TRUE, append = TRUE, toc = TRUE,
+    x, path, label = FALSE, add_date = TRUE, append = TRUE, toc = TRUE,
     update_fields = FALSE, height = 5, width = 6, res = 300) {
 
   if(add_date){
