@@ -23,7 +23,6 @@ workbook…
 
 ``` r
 library(gtsummary)
-#> #Uighur
 library(ggplot2)
 library(outbox)
 
@@ -55,7 +54,9 @@ my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
   ggplot2::geom_point()
 
 write_output(my_plot, my_outbox)
+```
 
+``` r
 my_table <- gtsummary::tbl_summary(mtcars)
 
 write_output(my_table, my_outbox)
