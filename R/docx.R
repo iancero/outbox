@@ -1,11 +1,11 @@
 create_docx <- function(path, toc = TRUE) {
-  word_doc <- officer::read_docx() %>%
+  word_doc <- officer::read_docx() |>
     officer::body_add_par(
       value = 'Title Page', # TODO add some title page handling,
       style = 'heading 1')
 
   if (toc) {
-    word_doc <- word_doc %>%
+    word_doc <- word_doc |>
       officer::body_add_toc()
   }
 
@@ -19,8 +19,7 @@ create_docx <- function(path, toc = TRUE) {
 #' @rdname write_output
 #' @export
 gtsummary_to_docx <- function(
-    x, path, label = FALSE, append = TRUE, toc = TRUE,
-    update_fields = FALSE) {
+    x, path, label = FALSE, append = TRUE, toc = TRUE, update_fields = FALSE) {
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
@@ -40,9 +39,9 @@ gtsummary_to_docx <- function(
 
   flex_tbl <- gtsummary::as_flex_table(x)
 
-  word_doc <- word_doc %>%
-    officer::body_add_break() %>%
-    officer::body_add_par(value = label, style = 'heading 1') %>%
+  word_doc <- word_doc |>
+    officer::body_add_break() |>
+    officer::body_add_par(value = label, style = 'heading 1') |>
     flextable::body_add_flextable(flex_tbl)
 
   # package officer saves word_doc to path
@@ -62,8 +61,8 @@ gtsummary_to_docx <- function(
 #' @rdname write_output
 #' @export
 ggplot_to_docx <- function(
-    x, path, label = FALSE, append = TRUE, toc = TRUE,
-    update_fields = FALSE, height = 5, width = 6, res = 300) {
+    x, path, label = FALSE, append = TRUE, toc = TRUE, update_fields = FALSE,
+    height = 5, width = 6, res = 300) {
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
@@ -81,9 +80,9 @@ ggplot_to_docx <- function(
     label <- 'Plot'
   }
 
-  word_doc <- word_doc %>%
-    officer::body_add_break() %>%
-    officer::body_add_par(value = label, style = 'heading 1') %>%
+  word_doc <- word_doc |>
+    officer::body_add_break() |>
+    officer::body_add_par(value = label, style = 'heading 1') |>
     officer::body_add_gg(
       value = x,
       width = width,

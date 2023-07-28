@@ -104,8 +104,8 @@ construct_output_function <- function(x, path){
 #' library(outbox)
 #' library(gtsummary)
 #'
-#' tbl_1 <- trial %>%
-#'   tbl_summary(include = c(age, grade, response)) %>%
+#' tbl_1 <- trial |>
+#'   tbl_summary(include = c(age, grade, response)) |>
 #'   modify_caption('Table 1. Drug trial results')
 #'
 #' path <- tempfile(fileext = '.xlsx')

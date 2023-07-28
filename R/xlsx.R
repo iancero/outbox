@@ -82,7 +82,7 @@ ggplot_to_xlsx <- function(
     height = height,
     dpi = res)
 
-  # insert image into the newly created sheet (not compatible with %>%)
+  # insert image into the newly created sheet (not compatible with |> or %>%)
   openxlsx::insertImage(
     wb = output_wb,
     file = plt_file,
