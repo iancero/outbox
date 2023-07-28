@@ -13,15 +13,7 @@ create_xlsx <- function(path) {
 
 #' @rdname write_output
 #' @export
-gtsummary_to_xlsx <- function(
-    x, path, label = FALSE, add_date = TRUE, append = TRUE) {
-
-  # TODO: convert overwrite to append
-
-  if(add_date){
-    path <- path %>%
-      append_date()
-  }
+gtsummary_to_xlsx <- function(x, path, label = FALSE, append = TRUE) {
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
@@ -60,13 +52,9 @@ gtsummary_to_xlsx <- function(
 #' @rdname write_output
 #' @export
 ggplot_to_xlsx <- function(
-    x, path, label = FALSE, add_date = TRUE, append = FALSE, width = 6, height = 5, res = 300) {
+    x, path, label = FALSE, append = FALSE, width = 6, height = 5, res = 300) {
 
   # TODO: Add support for an image caption (in text, not the image)
-
-  if(add_date){
-    path <- append_date(path)
-  }
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
