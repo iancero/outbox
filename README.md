@@ -163,8 +163,8 @@ library(outbox)
 
 path <- tempfile(fileext = '.xlsx')
 
-tbl_1 <- trial %>%
-  tbl_summary(include = c(age, grade, response)) %>%
+tbl_1 <- trial |>
+  tbl_summary(include = c(age, grade, response)) |>
   modify_caption('Table 1. Drug trial results')
 
 # starting with a blank output file (append = FALSE)
@@ -176,7 +176,7 @@ above.
 
 ``` r
 fit <- glm(response ~ age + stage, trial, family = binomial)
-tbl_2 <- fit %>% 
+tbl_2 <- fit |> 
   tbl_regression(exponentiate = TRUE)
 
 write_output(tbl_2, path, label = 'Regression coefficients', append = TRUE)
