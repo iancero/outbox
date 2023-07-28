@@ -22,22 +22,23 @@ whether the specific output is a `gtsummary` table headed to a `.xlsx`
 workbook…
 
 ``` r
-# library(gtsummary)
-# library(ggplot2)
-# library(outbox)
-# 
-# my_table <- gtsummary::tbl_summary(mtcars)
-# 
-# write_output(my_table, 'my_excel_workbook.xlsx')
+library(gtsummary)
+#> #Uighur
+library(ggplot2)
+library(outbox)
+
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table, 'my_excel_workbook.xlsx')
 ```
 
 …or a `ggplot` headed to a `.docx` document.
 
 ``` r
-# my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-#   ggplot2::geom_point()
-# 
-# write_output(my_plot, 'my_word_doc.docx')
+my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
+  ggplot2::geom_point()
+
+write_output(my_plot, 'my_word_doc.docx')
 ```
 
 ## Sequentially append output objects as they are made
@@ -48,16 +49,16 @@ This allows you to simply set the outbox path at the beginning and drop
 new output there as it is created.
 
 ``` r
-# my_outbox <- 'my_word_doc.docx'
-# 
-# my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-#   ggplot2::geom_point()
-# 
-# write_output(my_plot, my_outbox)
-# 
-# my_table <- gtsummary::tbl_summary(mtcars)
-# 
-# write_output(my_table, my_outbox)
+my_outbox <- 'my_word_doc.docx'
+
+my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
+  ggplot2::geom_point()
+
+write_output(my_plot, my_outbox)
+
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table, my_outbox)
 ```
 
 ## Add labels
@@ -69,7 +70,7 @@ is achieved by passing a string to the `label` parameter of
 files or as a level 1 header above the output in a .docx file.
 
 ``` r
-# write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
+write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
 ```
 
 ## The problem

@@ -26,22 +26,22 @@ The goal of this package is to provide a basic `outbox` for your data analysis w
 The desired result is a standardized process that makes getting analysis output to its final destination work like setting a completed paper document in a physical outbox. This should be true, regardless of whether the specific output is a `gtsummary` table headed to a `.xlsx` workbook... 
 
 ```{r}
-# library(gtsummary)
-# library(ggplot2)
-# library(outbox)
-# 
-# my_table <- gtsummary::tbl_summary(mtcars)
-# 
-# write_output(my_table, 'my_excel_workbook.xlsx')
+library(gtsummary)
+library(ggplot2)
+library(outbox)
+
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table, 'my_excel_workbook.xlsx')
 ```
 
 ...or a `ggplot` headed to a `.docx` document. 
 
 ```{r}
-# my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-#   ggplot2::geom_point()
-# 
-# write_output(my_plot, 'my_word_doc.docx')
+my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
+  ggplot2::geom_point()
+
+write_output(my_plot, 'my_word_doc.docx')
 ```
 
 ## Sequentially append output objects as they are made 
@@ -49,16 +49,16 @@ The desired result is a standardized process that makes getting analysis output 
 Much like a physical outbox, the `write_output()` is also designed to simply append each new output object to the end of the existing file. This allows you to simply set the outbox path at the beginning and drop new output there as it is created.
 
 ```{r}
-# my_outbox <- 'my_word_doc.docx'
-# 
-# my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-#   ggplot2::geom_point()
-# 
-# write_output(my_plot, my_outbox)
-# 
-# my_table <- gtsummary::tbl_summary(mtcars)
-# 
-# write_output(my_table, my_outbox)
+my_outbox <- 'my_word_doc.docx'
+
+my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
+  ggplot2::geom_point()
+
+write_output(my_plot, my_outbox)
+
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table, my_outbox)
 ```
 
 ## Add labels
@@ -66,7 +66,7 @@ Much like a physical outbox, the `write_output()` is also designed to simply app
 Sometimes with a physical outbox, you want to add brief sticky notes to remind you what you are looking at later. In the `outbox` package, that is achieved by passing a string to the `label` parameter of `write_output()`. This label is then used as the sheetname for .xlsx files or as a level 1 header above the output in a .docx file.
 
 ```{r}
-# write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
+write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
 ```
 
 
