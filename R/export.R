@@ -54,28 +54,12 @@ construct_output_function <- function(x, path){
 #' @param label Character string. This will be used as either the name of the
 #' sheet (must be unique for xlsx) this object will receive in the \code{.xlsx}
 #' document or it will be used as the heading on this object's page in the
-#' \code{.docx} document. If \code{FALSE}, sheets will be labelled by sheet
-#' number in the \code{.xlsx} workbook or by output type in the \code{.docx}
-#' document. That is, if a workbook already has two sheets, this new table's
-#' sheet name will be "Sheet 3". Alternatively, if the function is working with
-#' a table being output to a \code{.docx} document, the heading of the new page
-#' will simply be "Table". Note, this param intentionally received no default,
-#' to minimize the risk of dumping a bunch of output into a document. Although
-#' this is often easier than explicit labelling at the time of export, it tends
-#' to make it much harder for the recipient of the document to understand what
-#' is happening in a large document. For that reason, if the user truly wants
-#' the convenience, the need to declare it explicitly by setting this param to
-#' \code{FALSE}.
-#' @param add_date If \code{TRUE}, a date be appended to the end of the file
-#' name (\code{path}) before export. For example, "my_path.xlsx" will become
-#' something like "my_path_2020_01_25.xlsx" (using Sys.Date() for today's date).
-#' @param append If \code{TRUE} (the default) the function will attempt to
-#' append the newly created sheet/page to the end of the document, leaving all
-#' the earlier components of the document intact. If \code{FALSE}, the function
-#' will behave similarly to \code{base::write.csv()} and will write over the
-#' entire original document. That is, it will delete the original document,
-#' generate a new blank document, and finally place the newly created sheet
-#' inside that blank document.
+#' \code{.docx} document. If \code{FALSE} (the default), sheets will be labelled
+#' by sheet number in the \code{.xlsx} workbook or by output type in the
+#' \code{.docx} document. That is, if a workbook already has two sheets, this
+#' new table's sheet name will be "Sheet 3". Alternatively, if the function is
+#' working with a table being output to a \code{.docx} document, the heading of
+#' the new page will simply be "Table".
 #' @param toc If a new \code{.docx} document is being created, should it also
 #' include a table of contents?
 #' @param update_fields  Should the table of contents fields be updated after
