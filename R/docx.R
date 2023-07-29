@@ -15,11 +15,26 @@ create_docx <- function(path, toc = TRUE) {
   invisible(word_doc)
 }
 
+append_caption_docx <- function(word_doc, caption){
+  if (!is.null(caption)){
+    output_caption <- officer::block_caption(
+      label = as.character(caption),
+      style = 'Normal',
+      autonum = NULL)
+
+    word_doc <- word_doc |>
+      officer::body_add_caption(output_caption)
+  }
+
+  word_doc
+}
+
 
 #' @rdname write_output
 #' @export
 gtsummary_to_docx <- function(
-    x, path, label = FALSE, append = TRUE, toc = TRUE, update_fields = FALSE) {
+    x, path, label = FALSE, caption = NULL, append = TRUE, toc = TRUE,
+    update_fields = FALSE) {
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
@@ -42,7 +57,8 @@ gtsummary_to_docx <- function(
   word_doc <- word_doc |>
     officer::body_add_break() |>
     officer::body_add_par(value = label, style = 'heading 1') |>
-    flextable::body_add_flextable(flex_tbl)
+    flextable::body_add_flextable(flex_tbl) |>
+    append_caption_docx(caption = caption)
 
   # package officer saves word_doc to path
   print(word_doc, target = path)
@@ -61,7 +77,7 @@ gtsummary_to_docx <- function(
 #' @rdname write_output
 #' @export
 ggplot_to_docx <- function(
-    x, path, label = FALSE, append = TRUE, toc = TRUE, update_fields = FALSE,
+    x, path, label = FALSE, caption = NULL, append = TRUE, toc = TRUE, update_fields = FALSE,
     height = 5, width = 6, res = 300) {
 
   if(append == FALSE){
@@ -87,7 +103,8 @@ ggplot_to_docx <- function(
       value = x,
       width = width,
       height = height,
-      res = res)
+      res = res) |>
+    append_caption_docx(caption = caption)
 
   # package officer saves word_doc to path
   print(word_doc, target = path)
