@@ -8,12 +8,13 @@
 \alias{ggplot_to_xlsx}
 \title{Write output to a document}
 \usage{
-write_output(x, path, label = FALSE, append = TRUE, ...)
+write_output(x, path, label = FALSE, caption = NULL, append = TRUE, ...)
 
 gtsummary_to_docx(
   x,
   path,
   label = FALSE,
+  caption = NULL,
   append = TRUE,
   toc = TRUE,
   update_fields = FALSE
@@ -23,6 +24,7 @@ ggplot_to_docx(
   x,
   path,
   label = FALSE,
+  caption = NULL,
   append = TRUE,
   toc = TRUE,
   update_fields = FALSE,
@@ -31,13 +33,14 @@ ggplot_to_docx(
   res = 300
 )
 
-gtsummary_to_xlsx(x, path, label = FALSE, append = TRUE)
+gtsummary_to_xlsx(x, path, label = FALSE, caption = NULL, append = TRUE)
 
 ggplot_to_xlsx(
   x,
   path,
   label = FALSE,
-  append = FALSE,
+  caption = NULL,
+  append = TRUE,
   width = 6,
   height = 5,
   res = 300
@@ -58,6 +61,14 @@ by sheet number in the \code{.xlsx} workbook or by output type in the
 new table's sheet name will be "Sheet 3". Alternatively, if the function is
 working with a table being output to a \code{.docx} document, the heading of
 the new page will simply be "Table".}
+
+\item{caption}{Either \code{NULL} (the default) or a character string. If the
+argument is \code{NULL}, nothing will be added to the document page/sheet. If
+the argument is a character string, then this will be added as a text near
+the input object (\code{x}) in the resulting document page/sheet. If the
+output format is \code{.xlsx}, then the caption will be added to cell A1. If
+the output format is \code{.docx}, then it will be appended as "Normal" style
+text two lines below the primary \code{x} input.}
 
 \item{append}{If \code{TRUE} (the default) the function will attempt to
 append the newly created sheet/page to the end of the document, leaving all

@@ -60,6 +60,13 @@ construct_output_function <- function(x, path){
 #' new table's sheet name will be "Sheet 3". Alternatively, if the function is
 #' working with a table being output to a \code{.docx} document, the heading of
 #' the new page will simply be "Table".
+#' @param caption Either \code{NULL} (the default) or a character string. If the
+#' argument is \code{NULL}, nothing will be added to the document page/sheet. If
+#' the argument is a character string, then this will be added as a text near
+#' the input object (\code{x}) in the resulting document page/sheet. If the
+#' output format is \code{.xlsx}, then the caption will be added to cell A1. If
+#' the output format is \code{.docx}, then it will be appended as "Normal" style
+#' text two lines below the primary \code{x} input.
 #' @param append If \code{TRUE} (the default) the function will attempt to
 #' append the newly created sheet/page to the end of the document, leaving all
 #' the earlier components of the document intact. If \code{FALSE}, the function
