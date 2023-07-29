@@ -111,6 +111,27 @@ construct_output_function <- function(x, path){
 #' output to the same file, which is useful for large analyses with multiple
 #' important outputs.
 #'
+#' @section Parameter \code{label} vs. parameter \code{caption}:
+#'
+#' The difference between the \code{label} and \code{caption} is that label has
+#' a special role in the document it is sent to. In a \code{.docx} document, it
+#' will be a header at the top of a page. Visually, that will make it look more
+#' like a title. It has the additional benefit of being automatically detectable
+#' by MS Word's table of contents and other features. Likewise, \code{labels} in
+#' \code{.xlsx} documents will serve as sheet names. Because \code{label} will
+#' serve this titular role in both documents, it should ideally be short and
+#' simply used to help the document recipient locate something for which the
+#' reader might be searching.
+#'
+#' In contrast, the \code{caption} string is just plain text that will appear
+#' either above (\code{.xlsx}) or below (\code{.docx}) the output itself. It is
+#' suitable for much longer descriptions, capable of providing detail and
+#' context to the reader.
+#'
+#' Note, neither \code{label} nor \code{caption} support anything other than
+#' plain text (e.g., Rmarkdown).
+#'
+#'
 #' @return (invisibly) The original, unmodified output object (\code{x})
 #' @export
 #'
