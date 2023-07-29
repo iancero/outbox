@@ -41,6 +41,7 @@ output is a `gtsummary` table headed to a `.xlsx` workbook…
 
 ``` r
 library(gtsummary)
+#> #BlackLivesMatter
 library(outbox)
 
 my_table <- gtsummary::tbl_summary(mtcars)
@@ -81,7 +82,7 @@ my_table <- gtsummary::tbl_summary(mtcars)
 write_output(my_table, my_outbox)
 ```
 
-## Add labels
+### Add labels
 
 Again with a physical outbox, you sometimes want to add brief sticky
 notes to remind you what you are looking at later. In the `outbox`
@@ -95,7 +96,7 @@ above the output in a `.docx` file.
 write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
 ```
 
-## Add captions
+### Add captions
 
 XXX Complete this section
 
@@ -171,14 +172,14 @@ streamlined with `write_output()`. This is because `outbox` aspires only
 to streamlining, not adding functionality or additional control (see
 below).
 
-## What `outbox` will *not* do
+## Package scope: What `outbox` will *not* do
 
-Note, `outbox` has intentionally small aspirations and scope. It’s goal
-is only to standardize and streamline existing output infrastructure and
-provide only very basic convenience improvements (e.g., adding simple
-labels to output during export). It is not intended to add any
-meaningful functionality that doesn’t already exist. To abide by those
-constraints, `outbox` will NOT:
+Note, `outbox` has intentionally small aspirations. It’s goal is only to
+standardize and streamline existing output infrastructure and provide
+only very basic convenience improvements (e.g., adding simple labels to
+output during export). It is not intended to add any meaningful
+functionality that doesn’t already exist. To abide by those constraints,
+`outbox` will NOT:
 
 - **Write multiple objects in a single call**. Although this
   functionality was initially considered for `write_output()`,

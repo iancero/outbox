@@ -77,7 +77,7 @@ my_table <- gtsummary::tbl_summary(mtcars)
 write_output(my_table, my_outbox)
 ```
 
-## Add labels
+### Add labels
 
 Again with a physical outbox, you sometimes want to add brief sticky notes to remind you what you are looking at later. In the `outbox` package, that is achieved by passing a string to the `label` parameter of `write_output()`. That label is then used as the sheet name for `.xlsx` files or as a [level 1 header](https://support.microsoft.com/en-us/office/headers-and-footers-in-word-b693b4fb-0d23-4109-a621-1b828b824454) above the output in a `.docx` file.
 
@@ -85,7 +85,7 @@ Again with a physical outbox, you sometimes want to add brief sticky notes to re
 write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
 ```
 
-## Add captions
+### Add captions
 
 XXX Complete this section
 
@@ -137,9 +137,9 @@ Supported output file formats include:
 
 Additional output classes and file formats are currently under consideration for the future. However, any future support will only ever be expanded to (a) especially common classes and formats, for which (b) there are already existing specialty export functions that can be streamlined with `write_output()`. This is because `outbox` aspires only to streamlining, not adding functionality or additional control (see below).
 
-## What `outbox` will *not* do
+## Package scope: What `outbox` will *not* do
 
-Note, `outbox` has intentionally small aspirations and scope. It's goal is only to standardize and streamline existing output infrastructure and provide only very basic convenience improvements (e.g., adding simple labels to output during export). It is not intended to add any meaningful functionality that doesn't already exist. To abide by those constraints, `outbox` will NOT:
+Note, `outbox` has intentionally small aspirations. It's goal is only to standardize and streamline existing output infrastructure and provide only very basic convenience improvements (e.g., adding simple labels to output during export). It is not intended to add any meaningful functionality that doesn't already exist. To abide by those constraints, `outbox` will NOT:
 
 - **Write multiple objects in a single call**. Although this functionality was initially considered for `write_output()`, experience has shown that it often reduces the interpretability of the files it produces. To discourage the practice of dropping collections of (often unlabelled) output objects into files all at once, `write_output()` does not support lists of objects.
 - **Wrangle output objects into the correct format.** If you are not starting with an object in a supported format, `outbox` is unable to help.
