@@ -23,6 +23,8 @@ append_caption_docx <- function(word_doc, caption){
       autonum = NULL)
 
     word_doc <- word_doc |>
+      officer::body_add_par(' ') |>
+      officer::body_add_par(' ') |>
       officer::body_add_caption(output_caption)
   }
 
