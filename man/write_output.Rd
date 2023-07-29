@@ -8,13 +8,12 @@
 \alias{ggplot_to_xlsx}
 \title{Write output to a document}
 \usage{
-write_output(x, path, label, add_date = TRUE, append = TRUE, ...)
+write_output(x, path, label = FALSE, append = TRUE, ...)
 
 gtsummary_to_docx(
   x,
   path,
-  label,
-  add_date = TRUE,
+  label = FALSE,
   append = TRUE,
   toc = TRUE,
   update_fields = FALSE
@@ -23,8 +22,7 @@ gtsummary_to_docx(
 ggplot_to_docx(
   x,
   path,
-  label,
-  add_date = TRUE,
+  label = FALSE,
   append = TRUE,
   toc = TRUE,
   update_fields = FALSE,
@@ -33,13 +31,12 @@ ggplot_to_docx(
   res = 300
 )
 
-gtsummary_to_xlsx(x, path, label, add_date = TRUE, append = TRUE)
+gtsummary_to_xlsx(x, path, label = FALSE, append = TRUE)
 
 ggplot_to_xlsx(
   x,
   path,
-  label,
-  add_date = TRUE,
+  label = FALSE,
   append = FALSE,
   width = 6,
   height = 5,
@@ -55,30 +52,12 @@ it does not yet exist, it will be created.}
 \item{label}{Character string. This will be used as either the name of the
 sheet (must be unique for xlsx) this object will receive in the \code{.xlsx}
 document or it will be used as the heading on this object's page in the
-\code{.docx} document. If \code{FALSE}, sheets will be labelled by sheet
-number in the \code{.xlsx} workbook or by output type in the \code{.docx}
-document. That is, if a workbook already has two sheets, this new table's
-sheet name will be "Sheet 3". Alternatively, if the function is working with
-a table being output to a \code{.docx} document, the heading of the new page
-will simply be "Table". Note, this param intentionally received no default,
-to minimize the risk of dumping a bunch of output into a document. Although
-this is often easier than explicit labelling at the time of export, it tends
-to make it much harder for the recipient of the document to understand what
-is happening in a large document. For that reason, if the user truly wants
-the convenience, the need to declare it explicitly by setting this param to
-\code{FALSE}.}
-
-\item{add_date}{If \code{TRUE}, a date be appended to the end of the file
-name (\code{path}) before export. For example, "my_path.xlsx" will become
-something like "my_path_2020_01_25.xlsx" (using Sys.Date() for today's date).}
-
-\item{append}{If \code{TRUE} (the default) the function will attempt to
-append the newly created sheet/page to the end of the document, leaving all
-the earlier components of the document intact. If \code{FALSE}, the function
-will behave similarly to \code{base::write.csv()} and will write over the
-entire original document. That is, it will delete the original document,
-generate a new blank document, and finally place the newly created sheet
-inside that blank document.}
+\code{.docx} document. If \code{FALSE} (the default), sheets will be labelled
+by sheet number in the \code{.xlsx} workbook or by output type in the
+\code{.docx} document. That is, if a workbook already has two sheets, this
+new table's sheet name will be "Sheet 3". Alternatively, if the function is
+working with a table being output to a \code{.docx} document, the heading of
+the new page will simply be "Table".}
 
 \item{...}{Additional arguments to be passed to internal functions.}
 
@@ -132,8 +111,8 @@ important outputs.
 library(outbox)
 library(gtsummary)
 
-tbl_1 <- trial \%>\%
-  tbl_summary(include = c(age, grade, response)) \%>\%
+tbl_1 <- trial |>
+  tbl_summary(include = c(age, grade, response)) |>
   modify_caption('Table 1. Drug trial results')
 
 path <- tempfile(fileext = '.xlsx')
