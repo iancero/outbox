@@ -60,6 +60,13 @@ construct_output_function <- function(x, path){
 #' new table's sheet name will be "Sheet 3". Alternatively, if the function is
 #' working with a table being output to a \code{.docx} document, the heading of
 #' the new page will simply be "Table".
+#' @param append If \code{TRUE} (the default) the function will attempt to
+#' append the newly created sheet/page to the end of the document, leaving all
+#' the earlier components of the document intact. If \code{FALSE}, the function
+#' will behave similarly to \code{base::write.csv()} and will write over the
+#' entire original document. That is, it will delete the original document,
+#' generate a new blank document, and finally place the newly created sheet
+#' inside that blank document.
 #' @param toc If a new \code{.docx} document is being created, should it also
 #' include a table of contents?
 #' @param update_fields  Should the table of contents fields be updated after
