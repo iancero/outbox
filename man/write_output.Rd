@@ -134,11 +134,11 @@ tbl_1 <- trial |>
   tbl_summary(include = c(age, grade, response)) |>
   modify_caption('Table 1. Drug trial results')
 
-path <- tempfile(fileext = '.xlsx')
+my_outbox <- tempfile(fileext = '.xlsx')
 
 # starting with a blank output file (append = FALSE)
-write_output(tbl_1, path, label = 'Drug trial results', append = FALSE)
+write_output(tbl_1, my_outbox, label = 'Drug trial results', append = FALSE)
 
 # add an additional table to that same path, with append = TRUE
-gtsummary_to_xlsx(tbl_1, path, label = FALSE, append = TRUE)
+write_output(tbl_1, my_outbox, label = FALSE, append = TRUE)
 }
