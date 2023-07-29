@@ -9,38 +9,58 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of this package is to provide a basic `outbox` for your data
-analysis workflow, exclusively by streamlining existing functions
-available in the packages that produced the original output.
+Many data analysis outputs need to leave the R ecosystem shortly after
+they’re created - and usually to a file type that is ubiquitous to both
+data analysists and non-analysists alike.
 
-## A standardized export function
+The goal of this package is thus to provide basic “`outbox`”
+functionality to the R data analysis workflow. This is achieved with a
+standardized wrapper function (syntactic sugar using existing packages)
+that behaves the same way across common types of output and file
+formats.
 
-The desired result is a standardized process that makes getting analysis
-output to its final destination work like setting a completed paper
-document in a physical outbox. This should be true, regardless of
-whether the specific output is a `gtsummary` table headed to a `.xlsx`
-workbook…
+## Installation
 
-``` r
-# library(gtsummary)
-# library(ggplot2)
-# library(outbox)
-# 
-# my_table <- gtsummary::tbl_summary(mtcars)
-# 
-# write_output(my_table, 'my_excel_workbook.xlsx')
-```
-
-…or a `ggplot` headed to a `.docx` document.
+The `outbox` package is still in early development. You can install the
+development version of outbox from [GitHub](https://github.com/) with:
 
 ``` r
-# my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-#   ggplot2::geom_point()
-# 
-# write_output(my_plot, 'my_word_doc.docx')
+# install.packages('devtools')
+devtools::install_github('iancero/outbox')
 ```
 
-## Sequentially append output objects as they are made
+## Example
+
+The `outbox` package provides a single function `write_output()`
+designed to make your analysis workflow similar to a physical paper
+workflow. Simply put, when an item is complete, you put it in the your
+outbox.
+
+The experience should be the same, regardless of whether the specific
+output is a `gtsummary` table headed to a `.xlsx` workbook…
+
+``` r
+library(gtsummary)
+#> #BlackLivesMatter
+library(outbox)
+
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table, 'my_excel_workbook.xlsx')
+```
+
+…or a `ggplot` figure headed to a `.docx` document.
+
+``` r
+library(ggplot2)
+
+my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
+  ggplot2::geom_point()
+
+write_output(my_plot, 'my_word_doc.docx')
+```
+
+### Keep dropping to the same outbox
 
 Much like a physical outbox, the `write_output()` is also designed to
 simply append each new output object to the end of the existing file.
@@ -48,51 +68,53 @@ This allows you to simply set the outbox path at the beginning and drop
 new output there as it is created.
 
 ``` r
-# my_outbox <- 'my_word_doc.docx'
-# 
-# my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-#   ggplot2::geom_point()
-# 
-# write_output(my_plot, my_outbox)
-# 
-# my_table <- gtsummary::tbl_summary(mtcars)
-# 
-# write_output(my_table, my_outbox)
+my_outbox <- 'my_word_doc.docx'
+
+my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
+  ggplot2::geom_point()
+
+write_output(my_plot, my_outbox)
 ```
-
-## Add labels
-
-Sometimes with a physical outbox, you want to add brief sticky notes to
-remind you what you are looking at later. In the `outbox` package, that
-is achieved by passing a string to the `label` parameter of
-`write_output()`. This label is then used as the sheetname for .xlsx
-files or as a level 1 header above the output in a .docx file.
 
 ``` r
-# write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table, my_outbox)
 ```
 
-## The problem
+### Add labels
 
-Analysis output (e.g., results tables, plots) are *born* in R / Rmd
-files, but they often need to *live* in more common file formats (e.g.,
-`.docx`) shortly after they are created. Moreover, they typically need
-to live alongside several of their *sibling* plots and tables in the
-same output file.
+Again with a physical outbox, you sometimes want to add brief sticky
+notes to remind you what you are looking at later. In the `outbox`
+package, that is achieved by passing a string to the `label` parameter
+of `write_output()`. That label is then used as the sheet name for
+`.xlsx` files or as a [level 1
+header](https://support.microsoft.com/en-us/office/headers-and-footers-in-word-b693b4fb-0d23-4109-a621-1b828b824454)
+above the output in a `.docx` file.
+
+``` r
+write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
+```
+
+### Add captions
+
+XXX Complete this section
+
+## Why do we need `outbox`?
 
 Although many analysis output classes and their associated packages
 already have reliable mechanisms for exporting an output object, these
-functions are variable from package to package (and sometimes within
-functions of the same package).
+functions are variable from package to package - and sometimes even
+within functions of the same package.
 
-For example, the excellent `gtsummary` package makes the thoughtful
-choice of using `flextable` to export tables to `.docx` files and
-`huxtable` to export those same tables to `.xlsx` files. This is a good
-choice that results in high quality output to both sources, but creates
-a variable workflow across the two types of output.[^1]
+For example, the excellent `gtsummary` package uses `flextable` to
+export tables to `.docx` files and `huxtable` to export those same
+tables to `.xlsx` files. This is a good choice that results in high
+quality output to both sources, but creates a variable workflow across
+the two types of output.[^1]
 
-To see this in action, note that when we want to send an output table
-(`trial_tbl`) to an `.xlsx` document, only one step is required.
+To see this in action, note that when we want to send an `gtsummary`
+table (`trial_tbl`) to an `.xlsx` document, only one step is required.
 
 ``` r
 library(gtsummary)
@@ -106,9 +128,10 @@ trial_tbl |>
   gtsummary::as_hux_xlsx(file = xlsx_path)
 ```
 
-In contrast, when we want to send the same table to a word document, we
-need two steps. We also need to work with a different argument for our
-target file (i.e., `file` for `.xlsx` vs `path` for `.docx`).
+In contrast, when we want to send the same `gtsummary` table to a word
+document, we need two steps. We also need to work with a different
+argument for our target file (i.e., `file =` for `.xlsx` vs `path =` for
+`.docx`).
 
 ``` r
 docx_path <- tempfile(fileext = '.docx')
@@ -118,9 +141,18 @@ trial_tbl |>
   flextable::save_as_docx(path = docx_path)
 ```
 
+In each individual case, this non-standardization is only a minor issue.
+However, a single data analysis will likely involve several differed
+output classes, in turn exported to multiple different file types. The
+complexity grows quickly, slowing down the analysis process and making
+debugging more difficult.
+
 The approach `outbox` takes to resolve these problems is to offer a
 single wrapper function `write_output()`, which is ready to receive
-multiple output classes and output file extensions.
+multiple output classes and output file extensions - at least for the
+most common classes and file types.
+
+## Supported output classes and file types
 
 Currently, the supported output classes include:
 
@@ -132,65 +164,37 @@ Supported output file formats include:
 - `.xlsx`
 - `.docx`.
 
-**NOTE:** `outbox` has intentionally small aspirations. It’s goal is to
+Additional output classes and file formats are currently under
+consideration for the future. However, any future support will only ever
+be expanded to (a) especially common classes and formats, for which (b)
+there are already existing specialty export functions that can be
+streamlined with `write_output()`. This is because `outbox` aspires only
+to streamlining, not adding functionality or additional control (see
+below).
+
+## Package scope: What `outbox` will *not* do
+
+Note, `outbox` has intentionally small aspirations. It’s goal is only to
 standardize and streamline existing output infrastructure and provide
-only very basic convenience improvements (e.g., adding a time stamp
-output file names). It does not intend to do anything more than provide
-syntactic sugar to the existing packages that run underneath it. To
-maintain its role as a basic convenience wrapper package, it will not
-help wrangle output classes and it will not help format output.
+only very basic convenience improvements (e.g., adding simple labels to
+output during export). It is not intended to add any meaningful
+functionality that doesn’t already exist. To abide by those constraints,
+`outbox` will NOT:
 
-## Installation
-
-The `outbox` package is still in early development. You can install the
-development version of outbox from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("iancero/outbox")
-```
-
-## Example
-
-The workhorse of the `outbox` package is `write_output()`, which can
-automatically detect the output class and output file type.
-
-``` r
-library(gtsummary)
-library(outbox)
-
-path <- tempfile(fileext = '.xlsx')
-
-tbl_1 <- trial %>%
-  tbl_summary(include = c(age, grade, response)) %>%
-  modify_caption('Table 1. Drug trial results')
-
-# starting with a blank output file (append = FALSE)
-write_output(tbl_1, path, label = 'Drug trial results', append = FALSE)
-```
-
-It can then add additional tables to the end of the document created
-above.
-
-``` r
-fit <- glm(response ~ age + stage, trial, family = binomial)
-tbl_2 <- fit %>% 
-  tbl_regression(exponentiate = TRUE)
-
-write_output(tbl_2, path, label = 'Regression coefficients', append = TRUE)
-```
-
-Plots are also supported using the same function call.
-
-``` r
-library(ggplot2)
-
-plt_1 <- ggplot(mpg, aes(displ, hwy, colour = class)) + 
-  geom_point()
-
-write_output(plt_1, path, label = 'Regression coefficients', append = FALSE)
-#> Warning: Workbook does not contain any worksheets. A worksheet will be added.
-```
+- **Write multiple objects in a single call**. Although this
+  functionality was initially considered for `write_output()`,
+  experience has shown that it often reduces the interpretability of the
+  files it produces. To discourage the practice of dropping collections
+  of (often unlabelled) output objects into files all at once,
+  `write_output()` does not support lists of objects.
+- **Wrangle output objects into the correct format.** If you are not
+  starting with an object in a supported format, `outbox` is unable to
+  help.
+- **Tweak look and feel (formatting) of outputs.** The `outbox` package
+  is designed simply to call existing packages in a standardized way. If
+  you want your output formatted differently than the defaults given by
+  the packages on which `outbox` depends, it will be important to use
+  those packages directly.
 
 [^1]: To be fair to `gtsummary`, which is admittedly one of my own
     favorite packages, this is a cherry-picked example to demonstrate a

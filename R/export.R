@@ -54,21 +54,19 @@ construct_output_function <- function(x, path){
 #' @param label Character string. This will be used as either the name of the
 #' sheet (must be unique for xlsx) this object will receive in the \code{.xlsx}
 #' document or it will be used as the heading on this object's page in the
-#' \code{.docx} document. If \code{FALSE}, sheets will be labelled by sheet
-#' number in the \code{.xlsx} workbook or by output type in the \code{.docx}
-#' document. That is, if a workbook already has two sheets, this new table's
-#' sheet name will be "Sheet 3". Alternatively, if the function is working with
-#' a table being output to a \code{.docx} document, the heading of the new page
-#' will simply be "Table". Note, this param intentionally received no default,
-#' to minimize the risk of dumping a bunch of output into a document. Although
-#' this is often easier than explicit labelling at the time of export, it tends
-#' to make it much harder for the recipient of the document to understand what
-#' is happening in a large document. For that reason, if the user truly wants
-#' the convenience, the need to declare it explicitly by setting this param to
-#' \code{FALSE}.
-#' @param add_date If \code{TRUE}, a date be appended to the end of the file
-#' name (\code{path}) before export. For example, "my_path.xlsx" will become
-#' something like "my_path_2020_01_25.xlsx" (using Sys.Date() for today's date).
+#' \code{.docx} document. If \code{FALSE} (the default), sheets will be labelled
+#' by sheet number in the \code{.xlsx} workbook or by output type in the
+#' \code{.docx} document. That is, if a workbook already has two sheets, this
+#' new table's sheet name will be "Sheet 3". Alternatively, if the function is
+#' working with a table being output to a \code{.docx} document, the heading of
+#' the new page will simply be "Table".
+#' @param caption Either \code{NULL} (the default) or a character string. If the
+#' argument is \code{NULL}, nothing will be added to the document page/sheet. If
+#' the argument is a character string, then this will be added as a text near
+#' the input object (\code{x}) in the resulting document page/sheet. If the
+#' output format is \code{.xlsx}, then the caption will be added to cell A1. If
+#' the output format is \code{.docx}, then it will be appended as "Normal" style
+#' text two lines below the primary \code{x} input.
 #' @param append If \code{TRUE} (the default) the function will attempt to
 #' append the newly created sheet/page to the end of the document, leaving all
 #' the earlier components of the document intact. If \code{FALSE}, the function
@@ -120,19 +118,20 @@ construct_output_function <- function(x, path){
 #' library(outbox)
 #' library(gtsummary)
 #'
-#' tbl_1 <- trial %>%
-#'   tbl_summary(include = c(age, grade, response)) %>%
+#' tbl_1 <- trial |>
+#'   tbl_summary(include = c(age, grade, response)) |>
 #'   modify_caption('Table 1. Drug trial results')
 #'
-#' path <- tempfile(fileext = '.xlsx')
+#' my_outbox <- tempfile(fileext = '.xlsx')
 #'
 #' # starting with a blank output file (append = FALSE)
-#' write_output(tbl_1, path, label = 'Drug trial results', append = FALSE)
+#' write_output(tbl_1, my_outbox, label = 'Drug trial results', append = FALSE)
 #'
 #' # add an additional table to that same path, with append = TRUE
-#' gtsummary_to_xlsx(tbl_1, path, label = FALSE, append = TRUE)
+#' write_output(tbl_1, my_outbox, label = FALSE, append = TRUE)
 #' @order 1
-write_output <- function(x, path, label, add_date = TRUE, append = TRUE, ...) {
+write_output <- function(x, path, label = FALSE, caption = NULL,
+                         append = TRUE, ...) {
   dot_args <- rlang::list2(...)
   output_func <- construct_output_function(x, path)
 
@@ -141,7 +140,7 @@ write_output <- function(x, path, label, add_date = TRUE, append = TRUE, ...) {
     x = x,
     path = path,
     label = label,
-    add_date = add_date,
+    caption = caption,
     append = append,
     !!!dot_args)
 

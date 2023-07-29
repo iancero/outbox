@@ -1,5 +1,8 @@
 create_xlsx <- function(path) {
-  output_wb <- openxlsx::createWorkbook(creator = 'user')
+
+  # throws warning about empty workbook
+  output_wb <- suppressWarnings(
+    expr = openxlsx::createWorkbook(creator = 'user'))
 
   # TODO: create default title sheet and add into document
 
@@ -8,20 +11,26 @@ create_xlsx <- function(path) {
   invisible(output_wb)
 }
 
+append_caption_xlsx <- function(output_wb, sheet_name, caption){
+  if (!is.null(caption)){
+    output_caption <- as.character(caption)
 
+    openxlsx::writeData(
+      wb = output_wb,
+      sheet = sheet_name,
+      x = as.character(caption),
+      startCol = 1,
+      startRow = 1)
+  }
+
+  output_wb
+}
 
 
 #' @rdname write_output
 #' @export
-gtsummary_to_xlsx <- function(
-    x, path, label, add_date = TRUE, append = TRUE) {
-
-  # TODO: convert overwrite to append
-
-  if(add_date){
-    path <- path %>%
-      append_date()
-  }
+gtsummary_to_xlsx <- function(x, path, label = FALSE, caption = NULL,
+                              append = TRUE) {
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
@@ -41,11 +50,13 @@ gtsummary_to_xlsx <- function(
 
   hux_tbl <- gtsummary::as_hux_table(x)
 
-  huxtable::as_Workbook(
-    ht = hux_tbl,
-    Workbook = output_wb,
-    sheet = label,
-    write_caption = T)
+  output_wb <- huxtable::as_Workbook(
+      ht = hux_tbl,
+      Workbook = output_wb,
+      sheet = label,
+      write_caption = T,
+      start_row = 5) |>
+    append_caption_xlsx(sheet_name = label, caption = caption)
 
   openxlsx::saveWorkbook(output_wb, file = path, overwrite = TRUE)
 
@@ -60,13 +71,10 @@ gtsummary_to_xlsx <- function(
 #' @rdname write_output
 #' @export
 ggplot_to_xlsx <- function(
-    x, path, label, add_date = TRUE, append = FALSE, width = 6, height = 5, res = 300) {
+    x, path, label = FALSE, caption = NULL, append = TRUE, width = 6,
+    height = 5, res = 300) {
 
   # TODO: Add support for an image caption (in text, not the image)
-
-  if(add_date){
-    path <- append_date(path)
-  }
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
@@ -94,14 +102,21 @@ ggplot_to_xlsx <- function(
     height = height,
     dpi = res)
 
-  # insert image into the newly created sheet (not compatible with %>%)
+  # insert image into the newly created sheet (not compatible with |> or %>%)
   openxlsx::insertImage(
     wb = output_wb,
     file = plt_file,
     sheet = label,
+    startRow = 5,
     width = width,
     height = height,
     dpi = res)
+
+  # again, avoid using pipes with openxlsx
+  output_wb <- append_caption_xlsx(
+    output_wb = output_wb,
+    sheet_name = label,
+    caption = caption)
 
   # save active workbook file
   openxlsx::saveWorkbook(output_wb, file = path, overwrite = TRUE)
