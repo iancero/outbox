@@ -87,7 +87,24 @@ write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
 
 ### Add captions
 
-XXX Complete this section
+Basic support for captions of figures (and in the name of symmetry, also for tables) is provided too. Depending on the type of document, the caption will either appear above (`.xlsx`) or below (`.docx`) the output itself.
+
+```{r}
+fig_caption <- 'This figure depicts the relationship between weight and MPG'
+
+
+my_plot |> 
+write_output(path = my_outbox, label = 'Weight-MPG Fig', caption = fig_caption)
+```
+
+### `label` vs `caption`
+
+The difference between the `label` and `caption` is that label has a special role in the document it is sent to. In a `.docx` document, it will be a header at the top of a page. Visually, that will make it look more like a title. It has the additional benefit of being automatically detectable by Word's table of contents and other features. Likewise, `labels` in `.xlsx` documents will serve as sheet names. Because `label` will serve this titular role in both documents, it should ideally be short and simply used to help the document recipient locate whatever they are looking for.
+
+In contrast, the `caption` string is just plain text that will appear either above (`.xlsx`) or below (`.docx`) the output itself. It is suitable for much longer descriptions, capable of providing detail and context to the reader.
+
+Note, neither `label` nor `caption` support anything other than plain text (e.g., Rmarkdown).
+
 
 ## Why do we need `outbox`?
 
