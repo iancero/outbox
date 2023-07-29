@@ -19,9 +19,9 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-Many data analysis outputs need to leave the R ecosystem shortly after they're created, ideally to a file type that is ubiquitous to both data analysists and non-analysists alike.
+Many data analysis outputs need to leave the R ecosystem shortly after they're created - and usually to a file type that is ubiquitous to both data analysists and non-analysists alike.
 
-The goal of this package is thus to provide a basic `outbox` function for the R data analysis workflow. This is achieved with a standardized wrapper function (syntactic sugar using existing packages) that behaves the same way across common types of output and file formats.
+The goal of this package is thus to provide basic "`outbox`" functionality to the R data analysis workflow. This is achieved with a standardized wrapper function (syntactic sugar using existing packages) that behaves the same way across common types of output and file formats.
 
 ## Installation
 
@@ -47,7 +47,7 @@ my_table <- gtsummary::tbl_summary(mtcars)
 write_output(my_table, 'my_excel_workbook.xlsx')
 ```
 
-...or a `ggplot` headed to a `.docx` document. 
+...or a `ggplot` figure headed to a `.docx` document. 
 
 ```{r}
 library(ggplot2)
@@ -58,7 +58,7 @@ my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
 write_output(my_plot, 'my_word_doc.docx')
 ```
 
-## Sequentially append output objects as they are made 
+### Keep dropping to the same outbox
 
 Much like a physical outbox, the `write_output()` is also designed to simply append each new output object to the end of the existing file. This allows you to simply set the outbox path at the beginning and drop new output there as it is created.
 
@@ -79,7 +79,7 @@ write_output(my_table, my_outbox)
 
 ## Add labels
 
-Sometimes with a physical outbox, you want to add brief sticky notes to remind you what you are looking at later. In the `outbox` package, that is achieved by passing a string to the `label` parameter of `write_output()`. That label is then used as the sheet name for `.xlsx` files or as a level 1 header above the output in a `.docx` file.
+Again with a physical outbox, you sometimes want to add brief sticky notes to remind you what you are looking at later. In the `outbox` package, that is achieved by passing a string to the `label` parameter of `write_output()`. That label is then used as the sheet name for `.xlsx` files or as a [level 1 header](https://support.microsoft.com/en-us/office/headers-and-footers-in-word-b693b4fb-0d23-4109-a621-1b828b824454) above the output in a `.docx` file.
 
 ```{r}
 write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
@@ -89,13 +89,13 @@ write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
 
 XXX Complete this section
 
-## Why do we need this?
+## Why do we need `outbox`?
 
-Although many analysis output classes and their associated packages already have reliable mechanisms for exporting an output object, these functions are variable from package to package (and sometimes within functions of the same package).
+Although many analysis output classes and their associated packages already have reliable mechanisms for exporting an output object, these functions are variable from package to package - and sometimes even within functions of the same package.
 
-For example, the excellent `gtsummary` package makes the thoughtful choice of using `flextable` to export tables to `.docx` files and `huxtable` to export those same tables to `.xlsx` files. This is a good choice that results in high quality output to both sources, but creates a variable workflow across the two types of output.^[To be fair to `gtsummary`, which is admittedly one of my own favorite packages, this is a cherry-picked example to demonstrate a point. Elsewhere in the package, it actually provides several additional output mechanisms too - many of which are helpfully similar from function to function.] 
+For example, the excellent `gtsummary` package uses `flextable` to export tables to `.docx` files and `huxtable` to export those same tables to `.xlsx` files. This is a good choice that results in high quality output to both sources, but creates a variable workflow across the two types of output.^[To be fair to `gtsummary`, which is admittedly one of my own favorite packages, this is a cherry-picked example to demonstrate a point. Elsewhere in the package, it actually provides several additional output mechanisms too - many of which are helpfully similar from function to function.] 
 
-To see this in action, note that when we want to send an output table (`trial_tbl`) to an `.xlsx` document, only one step is required.
+To see this in action, note that when we want to send an `gtsummary` table (`trial_tbl`) to an `.xlsx` document, only one step is required.
 
 ```{r}
 library(gtsummary)
@@ -109,7 +109,7 @@ trial_tbl |>
   gtsummary::as_hux_xlsx(file = xlsx_path)
 ```
 
-In contrast, when we want to send the same table to a word document, we need two steps. We also need to work with a different argument for our target file (i.e., `file` for `.xlsx` vs `path` for `.docx`).
+In contrast, when we want to send the same `gtsummary` table to a word document, we need two steps. We also need to work with a different argument for our target file (i.e., `file =` for `.xlsx` vs `path =` for `.docx`).
 
 ```{r}
 docx_path <- tempfile(fileext = '.docx')
@@ -139,13 +139,13 @@ Additional output classes and file formats are currently under consideration for
 
 ## What `outbox` will *not* do
 
-Note, `outbox` has intentionally small aspirations. It's goal is to standardize and streamline existing output infrastructure and provide only very basic convenience improvements (e.g., adding simple labels to output during export). It is not intended to add any meaningful functionality that doesn't already exist. With those constraints in mind, `outbox` is not designed to:
+Note, `outbox` has intentionally small aspirations and scope. It's goal is only to standardize and streamline existing output infrastructure and provide only very basic convenience improvements (e.g., adding simple labels to output during export). It is not intended to add any meaningful functionality that doesn't already exist. To abide by those constraints, `outbox` will NOT:
 
-- **Dump lists of output into files**. Although this functionality was initially considered, experience has shown that it often reduces the interpretability of the files it produces. To discourage the practice of dropping collections of (often unlabelled) output objects into files all at once, `write_output()` does not support lists of objects.
+- **Write multiple objects in a single call**. Although this functionality was initially considered for `write_output()`, experience has shown that it often reduces the interpretability of the files it produces. To discourage the practice of dropping collections of (often unlabelled) output objects into files all at once, `write_output()` does not support lists of objects.
 - **Wrangle output objects into the correct format.** If you are not starting with an object in a supported format, `outbox` is unable to help.
-- **Tweak the formatting of outputs (e.g., ).** The `outbox` package is designed simply to call existing packages in a standardized way. If you want your output formatted differently than the defaults given by the packages on which `outbox` depends, it will be important to use those packages directly.
+- **Tweak look and feel (formatting) of outputs.** The `outbox` package is designed simply to call existing packages in a standardized way. If you want your output formatted differently than the defaults given by the packages on which `outbox` depends, it will be important to use those packages directly.
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, results='hide'}
 # keep these to clean up your working directory during README.md builds
 file.remove('my_excel_workbook.xlsx')
 file.remove('my_word_doc.docx')
