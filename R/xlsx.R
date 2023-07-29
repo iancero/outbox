@@ -1,5 +1,8 @@
 create_xlsx <- function(path) {
-  output_wb <- openxlsx::createWorkbook(creator = 'user')
+
+  # throws warning about empty workbook
+  output_wb <- suppressWarnings(
+    expr = openxlsx::createWorkbook(creator = 'user'))
 
   # TODO: create default title sheet and add into document
 
