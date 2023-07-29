@@ -29,7 +29,7 @@ development version of outbox from [GitHub](https://github.com/) with:
 devtools::install_github('iancero/outbox')
 ```
 
-## Example
+## Examples
 
 The `outbox` package provides a single function `write_output()`
 designed to make your analysis workflow similar to a physical paper
@@ -107,7 +107,7 @@ fig_caption <- 'This figure depicts the relationship between weight and MPG'
 
 
 my_plot |> 
-write_output(path = my_outbox, label = 'Weight-MPG Fig', caption = fig_caption)
+  write_output(path = my_outbox, label = 'Wt-vs-MPG Fig', caption = fig_caption)
 ```
 
 ### `label` vs `caption`
