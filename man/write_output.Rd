@@ -139,6 +139,10 @@ my_outbox <- tempfile(fileext = '.xlsx')
 # starting with a blank output file (append = FALSE)
 write_output(tbl_1, my_outbox, label = 'Drug trial results', append = FALSE)
 
+tbl_2 <- mtcars |>
+  lm(mpg ~ cyl + wt, data = _) |>
+  tbl_regression()
+
 # add an additional table to that same path, with append = TRUE
-write_output(tbl_1, my_outbox, label = FALSE, append = TRUE)
+write_output(tbl_2, my_outbox, label = FALSE, append = TRUE)
 }
