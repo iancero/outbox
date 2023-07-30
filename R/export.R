@@ -171,3 +171,46 @@ write_output <- function(x, path, label = FALSE, caption = NULL,
 
   invisible(x)
 }
+
+
+
+#' Create a function with closure to store the last path
+create_write_output_function <- function() {
+  last_path <- NULL
+
+  #' Write the output object to a file.
+  #'
+  #' This function writes the provided output object to a file at the specified
+  #' path. If the path is not provided, it will use the last path used in a previous
+  #' call to write_output().
+  #'
+  #' @param output The output object to be written to the file.
+  #' @param path Optional. Path to save the output.
+  #'
+  #' @return Invisible. This function does not return anything explicitly.
+  #'
+  write_output2 <- function(output, path = NULL) {
+    if (is.null(path)) {
+      if (is.null(last_path)) {
+        stop("No path provided and no last path stored.")
+      }
+      path <- last_path
+    }
+
+    # Perform the actual writing of the output to the file
+    # For demonstration purposes, here we are just writing the output as text to the file
+    # You can modify this part depending on the type of output you have.
+    cat(output, file = path)
+
+    # Store the path in the closure for future use
+    last_path <<- path
+
+    invisible(NULL) # Don't return anything explicitly
+  }
+
+  return(write_output2)
+}
+
+#' @export
+write_output2 <- create_write_output_function()
+
