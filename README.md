@@ -34,12 +34,11 @@ complete, you simply drop it in the your outbox.
 
 ### Same function across inputs/outputs
 
-The experience should be the same, regardless of whether the specific
-output is a `gtsummary` table headed to a `.xlsx` workbook…
+The outbox experience should be the same, regardless of whether the
+specific output is a `gtsummary` table headed to a `.xlsx` workbook…
 
 ``` r
 library(gtsummary)
-#> #BlackLivesMatter
 library(outbox)
 
 my_table <- tbl_summary(mtcars)
@@ -58,7 +57,7 @@ my_plot <- ggplot(mtcars, aes(wt, mpg)) +
 write_output(my_plot, 'my_word_doc.docx')
 ```
 
-### Keep dropping to the same outbox
+### Keep appending to the same outbox
 
 Much like a physical outbox, the `write_output()` is also designed to
 simply append each new output object to the end of the existing file.
@@ -94,7 +93,7 @@ header](https://support.microsoft.com/en-us/office/headers-and-footers-in-word-b
 above the output in a `.docx` file.
 
 ``` r
-write_output(my_table, path = my_outbox, label = 'Descriptive Statistics')
+write_output(my_table, label = 'Descriptive Statistics')
 ```
 
 ### Add captions
@@ -107,9 +106,7 @@ itself.
 ``` r
 fig_caption <- 'This figure depicts the relationship between weight and MPG'
 
-
-my_plot |> 
-  write_output(path = my_outbox, label = 'Wt-vs-MPG Fig', caption = fig_caption)
+write_output(my_plot, label = 'Wt-vs-MPG Fig', caption = fig_caption)
 ```
 
 ### label vs caption
