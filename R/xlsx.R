@@ -32,14 +32,15 @@ create_xlsx <- function(path) {
 #'         provided.
 #'
 #' @examples
-#'
-#' library(outbox)
-#'
 #' # Example of internal call that might be made by ggplot_to_xlsx()
-#' output_wb <- openxlsx::createWorkbook()
 #' sheet_name <- 'Sheet1'
 #' caption <- 'This is a sample caption.'
-#' append_caption_xlsx(output_wb, sheet_name, caption)
+#'
+#' # avoid using pipes with openxlsx
+#' output_wb <- openxlsx::createWorkbook()
+#' openxlsx::addWorksheet(output_wb, sheetName = sheet_name)
+#'
+#' output_wb <- outbox:::append_caption_xlsx(output_wb, sheet_name, caption)
 #'
 append_caption_xlsx <- function(output_wb, sheet_name, caption){
   if (!is.null(caption)){

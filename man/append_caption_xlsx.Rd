@@ -27,13 +27,14 @@ This function appends a caption to an XLSX sheet. It is designed to be used
 internally by xlsx-specific export functions (e.g., \code{ggplot_to_xlsx})
 }
 \examples{
-
-library(outbox)
-
 # Example of internal call that might be made by ggplot_to_xlsx()
-output_wb <- openxlsx::createWorkbook()
 sheet_name <- 'Sheet1'
 caption <- 'This is a sample caption.'
-append_caption_xlsx(output_wb, sheet_name, caption)
+
+# avoid using pipes with openxlsx
+output_wb <- openxlsx::createWorkbook()
+openxlsx::addWorksheet(output_wb, sheetName = sheet_name)
+
+output_wb <- outbox:::append_caption_xlsx(output_wb, sheet_name, caption)
 
 }

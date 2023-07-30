@@ -36,5 +36,5 @@ library(outbox)
 
 my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
 my_path <- 'output.xlsx'
-construct_output_function(my_ggplot, my_path)
+outbox:::construct_output_function(my_ggplot, my_path)
 }

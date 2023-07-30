@@ -35,14 +35,10 @@ create_docx <- function(path, toc = TRUE) {
 #'         provided.
 #'
 #' @examples
-#'
-#' library(outbox)
-#'
 #' # Example of internal call that might be made by ggplot_to_docx()
-#' word_doc <- officer::read_docx()
 #' caption <- 'This is a sample caption.'
-#' append_caption_docx(word_doc, caption)
-#'
+#' word_doc <- officer::read_docx() |>
+#'   outbox:::append_caption_docx(caption)
 append_caption_docx <- function(word_doc, caption){
   if (!is.null(caption)){
     output_caption <- officer::block_caption(

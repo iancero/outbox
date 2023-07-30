@@ -138,7 +138,7 @@ detect_output_ext <- function(path){
 #'
 #' my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
 #' my_path <- 'output.xlsx'
-#' construct_output_function(my_ggplot, my_path)
+#' outbox:::construct_output_function(my_ggplot, my_path)
 construct_output_function <- function(x, path){
   output_type <- detect_output_type(x)
   output_ext <- detect_output_ext(path)
