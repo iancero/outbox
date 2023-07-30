@@ -2,10 +2,12 @@ create_docx <- function(path, toc = TRUE) {
   word_doc <- officer::read_docx() |>
     officer::body_add_par(
       value = 'Title Page', # TODO add some title page handling,
-      style = 'heading 1')
+      style = 'centered')
 
   if (toc) {
     word_doc <- word_doc |>
+      officer::body_add_par(' ') |>
+      officer::body_add_par(' ') |>
       officer::body_add_toc()
   }
 
@@ -15,6 +17,28 @@ create_docx <- function(path, toc = TRUE) {
   invisible(word_doc)
 }
 
+
+#' Append Caption to Word Document
+#'
+#' This function appends a caption to a Word document. It is designed to be used
+#' internally by docx-specific export functions (e.g., \code{ggplot_to_docx})
+#'
+#' @param word_doc The Word document object to which the caption will be
+#'                appended.
+#'
+#' @param caption A character vector containing the caption text to be appended
+#'                to the Word document. If NULL or not provided, no caption will
+#'                be appended.
+#'
+#' @return The modified Word document object with the caption appended (if
+#'         provided) or the original Word document object if no caption is
+#'         provided.
+#'
+#' @examples
+#' # Example of internal call that might be made by ggplot_to_docx()
+#' caption <- 'This is a sample caption.'
+#' word_doc <- officer::read_docx() |>
+#'   outbox:::append_caption_docx(caption)
 append_caption_docx <- function(word_doc, caption){
   if (!is.null(caption)){
     output_caption <- officer::block_caption(
@@ -59,6 +83,8 @@ gtsummary_to_docx <- function(
   word_doc <- word_doc |>
     officer::body_add_break() |>
     officer::body_add_par(value = label, style = 'heading 1') |>
+    officer::body_add_par(' ') |>
+    officer::body_add_par(' ') |>
     flextable::body_add_flextable(flex_tbl) |>
     append_caption_docx(caption = caption)
 
@@ -79,8 +105,8 @@ gtsummary_to_docx <- function(
 #' @rdname write_output
 #' @export
 ggplot_to_docx <- function(
-    x, path, label = FALSE, caption = NULL, append = TRUE, toc = TRUE, update_fields = FALSE,
-    height = 5, width = 6, res = 300) {
+    x, path, label = FALSE, caption = NULL, append = TRUE, toc = TRUE,
+    update_fields = FALSE, height = 5, width = 6, res = 300) {
 
   if(append == FALSE){
     # delete existing file, so a new one can be created below
@@ -101,6 +127,8 @@ ggplot_to_docx <- function(
   word_doc <- word_doc |>
     officer::body_add_break() |>
     officer::body_add_par(value = label, style = 'heading 1') |>
+    officer::body_add_par(' ') |>
+    officer::body_add_par(' ') |>
     officer::body_add_gg(
       value = x,
       width = width,

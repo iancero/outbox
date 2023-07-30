@@ -11,6 +11,37 @@ create_xlsx <- function(path) {
   invisible(output_wb)
 }
 
+
+#' Append Caption to XLSX Sheet
+#'
+#' This function appends a caption to an XLSX sheet. It is designed to be used
+#' internally by xlsx-specific export functions (e.g., \code{ggplot_to_xlsx})
+#'
+#' @param output_wb The output workbook object to which the caption will be
+#'                  appended.
+#'
+#' @param sheet_name A character string representing the name of the sheet to
+#'                   which the caption will be appended.
+#'
+#' @param caption A character string containing the caption text to be appended
+#'                to the sheet. If NULL or not provided, no caption will be
+#'                appended.
+#'
+#' @return The modified output workbook object with the caption appended (if
+#'         provided) or the original output workbook object if no caption is
+#'         provided.
+#'
+#' @examples
+#' # Example of internal call that might be made by ggplot_to_xlsx()
+#' sheet_name <- 'Sheet1'
+#' caption <- 'This is a sample caption.'
+#'
+#' # avoid using pipes with openxlsx
+#' output_wb <- openxlsx::createWorkbook()
+#' openxlsx::addWorksheet(output_wb, sheetName = sheet_name)
+#'
+#' output_wb <- outbox:::append_caption_xlsx(output_wb, sheet_name, caption)
+#'
 append_caption_xlsx <- function(output_wb, sheet_name, caption){
   if (!is.null(caption)){
     output_caption <- as.character(caption)
@@ -126,6 +157,3 @@ ggplot_to_xlsx <- function(
 
   invisible(x)
 }
-
-
-

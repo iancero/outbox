@@ -8,7 +8,7 @@
 \alias{ggplot_to_xlsx}
 \title{Write output to a document}
 \usage{
-write_output(x, path, label = FALSE, caption = NULL, append = TRUE, ...)
+write_output(x, path = NULL, label = FALSE, caption = NULL, append = TRUE, ...)
 
 gtsummary_to_docx(
   x,
@@ -50,7 +50,10 @@ ggplot_to_xlsx(
 \item{x}{A table with class "gtsummary" or a plot with class "ggplot"}
 
 \item{path}{Path to the document, ending in \code{.xlsx} or \code{.docx}. If
-it does not yet exist, it will be created.}
+it does not yet exist, it will be created. Note, if the path is not provided
+(i.e., when set to its default, \code{path = NULL}), it will use the last
+path used in a previous call to write_output() (which is retrieved via the
+\code{last_path()} function).}
 
 \item{label}{Character string. This will be used as either the name of the
 sheet (must be unique for xlsx) this object will receive in the \code{.xlsx}
@@ -113,7 +116,9 @@ functions the user calls on a regular basis. Under the hood, this function
 detects the object type and the file extension supplied by the user, then
 chooses one of the other more specific functions to apply. For this reason,
 it should be uncommon that the user needs to use any of the more specific
-functions directly.
+functions directly. However, they are made available to the end user to
+potentially assist in debugging (e.g., the user wants to assess how the
+\code{write_output()} function) is behaving internally.
 
 Note, the functions given here are note designed to do much more
 than the existing packages that they call underneath. For example, the
@@ -126,6 +131,28 @@ addition, these functions facilitate the repetitive appending of additional
 output to the same file, which is useful for large analyses with multiple
 important outputs.
 }
+\section{Parameter \code{label} vs. parameter \code{caption}}{
+
+
+The difference between the \code{label} and \code{caption} is that label has
+a special role in the document it is sent to. In a \code{.docx} document, it
+will be a header at the top of a page. Visually, that will make it look more
+like a title. It has the additional benefit of being automatically detectable
+by MS Word's table of contents and other features. Likewise, \code{labels} in
+\code{.xlsx} documents will serve as sheet names. Because \code{label} will
+serve this titular role in both documents, it should ideally be short and
+simply used to help the document recipient locate something for which the
+reader might be searching.
+
+In contrast, the \code{caption} string is just plain text that will appear
+either above (\code{.xlsx}) or below (\code{.docx}) the output itself. It is
+suitable for much longer descriptions, capable of providing detail and
+context to the reader.
+
+Note, neither \code{label} nor \code{caption} support anything other than
+plain text (e.g., Rmarkdown).
+}
+
 \examples{
 library(outbox)
 library(gtsummary)
@@ -139,6 +166,10 @@ my_outbox <- tempfile(fileext = '.xlsx')
 # starting with a blank output file (append = FALSE)
 write_output(tbl_1, my_outbox, label = 'Drug trial results', append = FALSE)
 
+tbl_2 <- mtcars |>
+  lm(mpg ~ cyl + wt, data = _) |>
+  tbl_regression()
+
 # add an additional table to that same path, with append = TRUE
-write_output(tbl_1, my_outbox, label = FALSE, append = TRUE)
+write_output(tbl_2, my_outbox, label = FALSE, append = TRUE)
 }
