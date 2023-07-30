@@ -1,3 +1,46 @@
+outbox_env <- new.env(parent = emptyenv())
+
+#' Retrieve the last path used in write_output()
+#'
+#' This function returns the last path used in a previous call to
+#' write_output(). If no path has been used yet, it returns NULL. It is desiged
+#' to be used in conjunction with \code{write_output()}.
+#'
+#' @return The last path used in \code{write_output()}, or \code{NULL} if no
+#' path has been used yet.
+#'
+#' @export
+last_path <- function() {
+  get('last_path', envir = outbox_env)
+}
+
+
+
+#' Detect the Output Type from an Object
+#'
+#' This function detects the output type from a given object. It checks if the
+#' object's class matches one of the supported classes ('gtsummary' or
+#' 'ggplot'), and throws an error if the extension is not a supported type.
+#'
+#' @param x An output object (e.g. table) from which to detect the output type.
+#'
+#' @return A character vector indicating the detected output type. If the
+#' detected class is not one of the supported classes ('gtsummary' or 'ggplot'),
+#' the function will throw an error.
+#'
+#' @details
+#'
+#' This function is used internally by \code{write_output()}. Generally, the end
+#' user should not have a reason to call it directly. It is exported instead as
+#' a convenience function, in case the user needs to debug something
+#' (e.g., to understand how the \code{write_output()} function is assessing
+#' their output objects internally).
+#'
+#' @examples
+#' my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
+#' detect_output_type(my_ggplot)
+#'
+#' @export
 detect_output_type <- function(x){
   supported_classes <- c('gtsummary', 'ggplot')
   detected_class <- which(supported_classes %in% class(x))
@@ -15,6 +58,33 @@ detect_output_type <- function(x){
   cls
 }
 
+
+#' Detect the Output Extension from a File Path
+#'
+#' This function detects the output extension from a given file path. It checks
+#' if the file extension matches one of the supported extensions ('xlsx' or
+#' 'docx'), and throws an error if the extension is not a supported type.
+#'
+#' @param path A character vector representing the file path from which to
+#' detect the output extension.
+#'
+#' @details
+#'
+#' This function is used internally by \code{write_output()}. Generally, the end
+#' user should not have a reason to call it directly. It is exported instead as
+#' a convenience function, in case the user needs to debug something
+#' (e.g., to understand how the \code{write_output()} function is assessing
+#' their output objects internally).
+#'
+#' @return A character vector indicating the detected output extension. If the
+#' detected extension is not one of the supported extensions ('xlsx' or 'docx'),
+#' the function will throw an error.
+#'
+#' @examples
+#' path <- "example.xlsx"
+#' detect_output_ext(path)
+#'
+#' @export
 detect_output_ext <- function(path){
   supported_exts <- c('xlsx', 'docx')
   detected_ext <- which(supported_exts %in% tools::file_ext(path))
@@ -33,6 +103,36 @@ detect_output_ext <- function(path){
 }
 
 
+#' Construct Output Function Name
+#'
+#' This function is used by the generic \code{write_output()} function to make
+#' the appropriate specific output function call (e.g.,
+#' \code{gtsummary_to_docx}) under the hood.
+#'
+#' @param x An object from which to detect the output type.
+#'
+#' @param path A character vector representing the file path from which to detect
+#' the output extension.
+#'
+#'
+#' @details
+#'
+#' It constructs the name of the specific output function to be used (e.g.,
+#' \code{gtsummary_to_docx}), based on the detected output type and output
+#' extension. The output function name is in the format
+#' "{output_type}_to_{output_ext}".
+#'
+#' This function is intended for internal use only. It is not exported to the
+#' end user.
+#'
+#' @return A character vector representing the name of the constructed output
+#'         function. If the output type or extension is not supported, the function
+#'         will throw an error.
+#'
+#' @examples
+#' my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
+#' my_path <- "output.xlsx"
+#' construct_output_function(my_ggplot, my_path)
 construct_output_function <- function(x, path){
   output_type <- detect_output_type(x)
   output_ext <- detect_output_ext(path)
@@ -50,7 +150,10 @@ construct_output_function <- function(x, path){
 #'
 #' @param x A table with class "gtsummary" or a plot with class "ggplot"
 #' @param path Path to the document, ending in \code{.xlsx} or \code{.docx}. If
-#' it does not yet exist, it will be created.
+#' it does not yet exist, it will be created. Note, if the path is not provided
+#' (i.e., when set to its default, \code{path = NULL}), it will use the last
+#' path used in a previous call to write_output() (which is retrieved via the
+#' \code{last_path()} function).
 #' @param label Character string. This will be used as either the name of the
 #' sheet (must be unique for xlsx) this object will receive in the \code{.xlsx}
 #' document or it will be used as the heading on this object's page in the
@@ -98,7 +201,9 @@ construct_output_function <- function(x, path){
 #' detects the object type and the file extension supplied by the user, then
 #' chooses one of the other more specific functions to apply. For this reason,
 #' it should be uncommon that the user needs to use any of the more specific
-#' functions directly.
+#' functions directly. However, they are made available to the end user to
+#' potentially assist in debugging (e.g., the user wants to assess how the
+#' \code{write_output()} function) is behaving internally.
 #'
 #' Note, the functions given here are note designed to do much more
 #' than the existing packages that they call underneath. For example, the
@@ -155,8 +260,21 @@ construct_output_function <- function(x, path){
 #' # add an additional table to that same path, with append = TRUE
 #' write_output(tbl_2, my_outbox, label = FALSE, append = TRUE)
 #' @order 1
-write_output <- function(x, path, label = FALSE, caption = NULL,
+write_output <- function(x, path = NULL, label = FALSE, caption = NULL,
                          append = TRUE, ...) {
+
+  if (is.null(path)) {
+
+    if (is.null(last_path())) {
+      stop("No path provided and no last path stored.")
+    }
+
+    path <- last_path()
+
+  }
+
+  assign('last_path', value = path, envir = outbox_env)
+
   dot_args <- rlang::list2(...)
   output_func <- construct_output_function(x, path)
 
@@ -172,45 +290,4 @@ write_output <- function(x, path, label = FALSE, caption = NULL,
   invisible(x)
 }
 
-
-
-#' Create a function with closure to store the last path
-create_write_output_function <- function() {
-  last_path <- NULL
-
-  #' Write the output object to a file.
-  #'
-  #' This function writes the provided output object to a file at the specified
-  #' path. If the path is not provided, it will use the last path used in a previous
-  #' call to write_output().
-  #'
-  #' @param output The output object to be written to the file.
-  #' @param path Optional. Path to save the output.
-  #'
-  #' @return Invisible. This function does not return anything explicitly.
-  #'
-  write_output2 <- function(output, path = NULL) {
-    if (is.null(path)) {
-      if (is.null(last_path)) {
-        stop("No path provided and no last path stored.")
-      }
-      path <- last_path
-    }
-
-    # Perform the actual writing of the output to the file
-    # For demonstration purposes, here we are just writing the output as text to the file
-    # You can modify this part depending on the type of output you have.
-    cat(output, file = path)
-
-    # Store the path in the closure for future use
-    last_path <<- path
-
-    invisible(NULL) # Don't return anything explicitly
-  }
-
-  return(write_output2)
-}
-
-#' @export
-write_output2 <- create_write_output_function()
 
