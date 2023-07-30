@@ -10,14 +10,11 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 Many data analysis outputs need to leave the R ecosystem shortly after
-they’re created - and usually to a file type that is ubiquitous to both
-data analysists and non-analysists alike.
-
-The goal of this package is thus to provide basic “`outbox`”
-functionality to the R data analysis workflow. This is achieved with a
-standardized wrapper function (syntactic sugar using existing packages)
-that behaves the same way across common types of output and file
-formats.
+they’re created. The goal of this package is thus to provide basic
+“`outbox`” functionality to the R data analysis workflow. This is
+achieved with a standardized wrapper function - syntactic sugar using
+existing packages - that behaves the same way across common types of
+output and file formats.
 
 ## Installation
 
@@ -33,7 +30,7 @@ devtools::install_github('iancero/outbox')
 
 The `outbox` package provides a single function `write_output()`
 designed to make your analysis workflow similar to a physical paper
-workflow. Simply put, when an item is complete, you put it in the your
+workflow. When an item is complete, you simply drop it in the your
 outbox.
 
 The experience should be the same, regardless of whether the specific
@@ -43,7 +40,7 @@ output is a `gtsummary` table headed to a `.xlsx` workbook…
 library(gtsummary)
 library(outbox)
 
-my_table <- gtsummary::tbl_summary(mtcars)
+my_table <- tbl_summary(mtcars)
 
 write_output(my_table, 'my_excel_workbook.xlsx')
 ```
@@ -53,8 +50,8 @@ write_output(my_table, 'my_excel_workbook.xlsx')
 ``` r
 library(ggplot2)
 
-my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-  ggplot2::geom_point()
+my_plot <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point()
 
 write_output(my_plot, 'my_word_doc.docx')
 ```
@@ -75,25 +72,8 @@ my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
 write_output(my_plot, my_outbox)
 ```
 
-``` r
-my_table <- gtsummary::tbl_summary(mtcars)
-
-write_output(my_table, my_outbox)
-```
-
-### Ignore the path argument
-
-The `outbox` package also remembers the last path you used for
-`write_output()`. On subsequent calls, you can therefor drop the path
-argument for convenience.
-
-``` r
-my_outbox <- 'my_word_doc.docx'
-
-write_output(my_plot, my_outbox)
-```
-
-Just supply the output, and move on to the next part of the analysis.
+On subsequent calls, you can even drop the path argument for
+convenience.
 
 ``` r
 my_table <- gtsummary::tbl_summary(mtcars)
