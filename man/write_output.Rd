@@ -8,7 +8,7 @@
 \alias{ggplot_to_xlsx}
 \title{Write output to a document}
 \usage{
-write_output(x, path, label = FALSE, caption = NULL, append = TRUE, ...)
+write_output(x, path = NULL, label = FALSE, caption = NULL, append = TRUE, ...)
 
 gtsummary_to_docx(
   x,
@@ -50,7 +50,10 @@ ggplot_to_xlsx(
 \item{x}{A table with class "gtsummary" or a plot with class "ggplot"}
 
 \item{path}{Path to the document, ending in \code{.xlsx} or \code{.docx}. If
-it does not yet exist, it will be created.}
+it does not yet exist, it will be created. Note, if the path is not provided
+(i.e., when set to its default, \code{path = NULL}), it will use the last
+path used in a previous call to write_output() (which is retrieved via the
+\code{last_path()} function).}
 
 \item{label}{Character string. This will be used as either the name of the
 sheet (must be unique for xlsx) this object will receive in the \code{.xlsx}
@@ -113,7 +116,9 @@ functions the user calls on a regular basis. Under the hood, this function
 detects the object type and the file extension supplied by the user, then
 chooses one of the other more specific functions to apply. For this reason,
 it should be uncommon that the user needs to use any of the more specific
-functions directly.
+functions directly. However, they are made available to the end user to
+potentially assist in debugging (e.g., the user wants to assess how the
+\code{write_output()} function) is behaving internally.
 
 Note, the functions given here are note designed to do much more
 than the existing packages that they call underneath. For example, the
