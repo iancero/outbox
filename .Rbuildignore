@@ -5,3 +5,4 @@
 ^practice\.Rmd$
 ^README\.Rmd$
 ^\.github$
+^codecov\.yml$
