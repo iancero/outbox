@@ -56,6 +56,7 @@ append_caption_docx <- function(word_doc, caption){
 }
 
 
+
 #' @rdname write_output
 #' @export
 gtsummary_to_docx <- function(
