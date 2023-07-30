@@ -77,6 +77,25 @@ my_table <- gtsummary::tbl_summary(mtcars)
 write_output(my_table, my_outbox)
 ```
 
+### Ignore the path argument
+
+The `outbox` package also remembers the last path you used for `write_output()`. On subsequent calls, you can therefor drop the path argument for convenience.
+
+```{r}
+my_outbox <- 'my_word_doc.docx'
+
+write_output(my_plot, my_outbox)
+```
+
+Just supply the output, and move on to the next part of the analysis.
+
+```{r}
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table)
+```
+
+
 ### Add labels
 
 Again with a physical outbox, you sometimes want to add brief sticky notes to remind you what you are looking at later. In the `outbox` package, that is achieved by passing a string to the `label` parameter of `write_output()`. That label is then used as the sheet name for `.xlsx` files or as a [level 1 header](https://support.microsoft.com/en-us/office/headers-and-footers-in-word-b693b4fb-0d23-4109-a621-1b828b824454) above the output in a `.docx` file.

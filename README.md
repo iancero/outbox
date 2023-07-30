@@ -81,6 +81,26 @@ my_table <- gtsummary::tbl_summary(mtcars)
 write_output(my_table, my_outbox)
 ```
 
+### Ignore the path argument
+
+The `outbox` package also remembers the last path you used for
+`write_output()`. On subsequent calls, you can therefor drop the path
+argument for convenience.
+
+``` r
+my_outbox <- 'my_word_doc.docx'
+
+write_output(my_plot, my_outbox)
+```
+
+Just supply the output, and move on to the next part of the analysis.
+
+``` r
+my_table <- gtsummary::tbl_summary(mtcars)
+
+write_output(my_table)
+```
+
 ### Add labels
 
 Again with a physical outbox, you sometimes want to add brief sticky
