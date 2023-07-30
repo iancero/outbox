@@ -11,14 +11,14 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 Many data analysis outputs need to leave the R ecosystem shortly after
 they’re created. The goal of this package is thus to provide basic
-“`outbox`” functionality to the R data analysis workflow. This is
-achieved with a standardized wrapper function - syntactic sugar using
-existing packages - that behaves the same way across common types of
-output and file formats.
+“outbox” functionality to the R data analysis workflow. This is achieved
+with a standardized wrapper function - syntactic sugar using existing
+packages - that behaves the same way across common types of output and
+file formats.
 
 ## Installation
 
-The `outbox` package is still in early development. You can install the
+The outbox package is still in early development. You can install the
 development version of outbox from [GitHub](https://github.com/) with:
 
 ``` r
@@ -28,16 +28,18 @@ devtools::install_github('iancero/outbox')
 
 ## Examples
 
-The `outbox` package provides a single function `write_output()`
-designed to make your analysis workflow similar to a physical paper
-workflow. When an item is complete, you simply drop it in the your
-outbox.
+Outbox provides a single function `write_output()` designed to make your
+analysis workflow similar to a physical paper workflow. When an item is
+complete, you simply drop it in the your outbox.
+
+### Same function across inputs/outputs
 
 The experience should be the same, regardless of whether the specific
 output is a `gtsummary` table headed to a `.xlsx` workbook…
 
 ``` r
 library(gtsummary)
+#> #BlackLivesMatter
 library(outbox)
 
 my_table <- tbl_summary(mtcars)
@@ -84,7 +86,7 @@ write_output(my_table)
 ### Add labels
 
 Again with a physical outbox, you sometimes want to add brief sticky
-notes to remind you what you are looking at later. In the `outbox`
+notes to remind you what you are looking at later. In the outbox
 package, that is achieved by passing a string to the `label` parameter
 of `write_output()`. That label is then used as the sheet name for
 `.xlsx` files or as a [level 1
@@ -110,7 +112,7 @@ my_plot |>
   write_output(path = my_outbox, label = 'Wt-vs-MPG Fig', caption = fig_caption)
 ```
 
-### `label` vs `caption`
+### label vs caption
 
 The difference between the `label` and `caption` is that label has a
 special role in the document it is sent to. In a `.docx` document, it
@@ -130,7 +132,7 @@ context to the reader.
 Note, neither `label` nor `caption` support anything other than plain
 text (e.g., Rmarkdown).
 
-## Why do we need `outbox`?
+## Why do we need outbox?
 
 Although many analysis output classes and their associated packages
 already have reliable mechanisms for exporting an output object, these
@@ -177,10 +179,10 @@ output classes, in turn exported to multiple different file types. The
 complexity grows quickly, slowing down the analysis process and making
 debugging more difficult.
 
-The approach `outbox` takes to resolve these problems is to offer a
-single wrapper function `write_output()`, which is ready to receive
-multiple output classes and output file extensions - at least for the
-most common classes and file types.
+The approach outbox takes to resolve these problems is to offer a single
+wrapper function `write_output()`, which is ready to receive multiple
+output classes and output file extensions - at least for the most common
+classes and file types.
 
 ## Supported output classes and file types
 
@@ -198,18 +200,18 @@ Additional output classes and file formats are currently under
 consideration for the future. However, any future support will only ever
 be expanded to (a) especially common classes and formats, for which (b)
 there are already existing specialty export functions that can be
-streamlined with `write_output()`. This is because `outbox` aspires only
+streamlined with `write_output()`. This is because outbox aspires only
 to streamlining, not adding functionality or additional control (see
 below).
 
-## Package scope: What `outbox` will *not* do
+## Package scope: What outbox will *not* do
 
-Note, `outbox` has intentionally small aspirations. It’s goal is only to
+Note, outbox has intentionally small aspirations. It’s goal is only to
 standardize and streamline existing output infrastructure and provide
 only very basic convenience improvements (e.g., adding simple labels to
 output during export). It is not intended to add any meaningful
 functionality that doesn’t already exist. To abide by those constraints,
-`outbox` will NOT:
+outbox will NOT:
 
 - **Write multiple objects in a single call**. Although this
   functionality was initially considered for `write_output()`,
@@ -218,16 +220,16 @@ functionality that doesn’t already exist. To abide by those constraints,
   of (often unlabelled) output objects into files all at once,
   `write_output()` does not support lists of objects.
 - **Wrangle output objects into the correct format.** If you are not
-  starting with an object in a supported format, `outbox` is unable to
+  starting with an object in a supported format, outbox is unable to
   help.
-- **Tweak look and feel (formatting) of outputs.** The `outbox` package
-  is designed simply to call existing packages in a standardized way. If
+- **Tweak look and feel (formatting) of outputs.** The outbox package is
+  designed simply to call existing packages in a standardized way. If
   you want your output formatted differently than the defaults given by
-  the packages on which `outbox` depends, it will be important to use
+  the packages on which outbox depends, it will be important to use
   those packages directly.
 
 [^1]: To be fair to `gtsummary`, which is admittedly one of my own
     favorite packages, this is a cherry-picked example to demonstrate a
-    point. Elsewhere in the package, it actually provides several
-    additional output mechanisms too - many of which are helpfully
-    similar from function to function.
+    point. Elsewhere in that package, several additional output
+    mechanisms are available - many of which are helpfully similar from
+    function to function.
