@@ -59,6 +59,8 @@ gtsummary_to_docx <- function(
   word_doc <- word_doc |>
     officer::body_add_break() |>
     officer::body_add_par(value = label, style = 'heading 1') |>
+    officer::body_add_par(' ') |>
+    officer::body_add_par(' ') |>
     flextable::body_add_flextable(flex_tbl) |>
     append_caption_docx(caption = caption)
 
@@ -101,6 +103,8 @@ ggplot_to_docx <- function(
   word_doc <- word_doc |>
     officer::body_add_break() |>
     officer::body_add_par(value = label, style = 'heading 1') |>
+    officer::body_add_par(' ') |>
+    officer::body_add_par(' ') |>
     officer::body_add_gg(
       value = x,
       width = width,
