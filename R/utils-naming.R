@@ -1,10 +1,20 @@
 #' Append today's date to the end of a file path
 #'
-#' @param path The file path string (including file name and extension) to which the
-#' current date should be appended.
+#' @param path The file path string (including file name and extension) to which
+#' the current date should be appended.
 #'
 #' @return A modified string filepath with the date added (just before the
 #' file extension at the end).
+#'
+#' @details
+#' When code is run multiple times, it is sometimes desireable to maintain its
+#' previous output files, rather than overwriting them (e.g., to compare old vs.
+#' new in the case of a bug). One way to facilitate that is to append the
+#' current date to your outbox file path at the top of a document. That way,
+#' if the code is run on a new day, nothing will be overwritten from the
+#' previous day.
+#'
+#'
 #' @export
 #'
 #' @examples
