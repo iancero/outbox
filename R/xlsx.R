@@ -33,6 +33,8 @@ create_xlsx <- function(path) {
 #'
 #' @examples
 #'
+#' library(outbox)
+#'
 #' # Example of internal call that might be made by ggplot_to_xlsx()
 #' output_wb <- openxlsx::createWorkbook()
 #' sheet_name <- 'Sheet1'
@@ -154,50 +156,3 @@ ggplot_to_xlsx <- function(
 
   invisible(x)
 }
-
-
-#' Construct Output Function Name
-#'
-#' This function constructs the name of the output function to be used based on
-#' the detected output type and output extension. The output function name is in
-#' the format '{output_type}_to_{output_ext}'.
-#'
-#' @param x An object from which to detect the output type.
-#'
-#' @param path A character vector representing the file path from which to detect
-#'     the output extension.
-#'
-#' @return A character vector representing the name of the constructed output
-#'     function. If the output type or extension is not supported, the function
-#'     will throw an error.
-#'
-#' @examples
-#' my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
-#' my_path <- 'output.xlsx'
-#' construct_output_function(my_ggplot, my_path)
-#'
-
-
-
-#' Construct Output Function Name
-#'
-#' This function constructs the name of the output function to be used based on
-#' the detected output type and output extension. The output function name is in
-#' the format '{output_type}_to_{output_ext}'.
-#'
-#' @param x An object from which to detect the output type.
-#'
-#' @param path A character vector representing the file path from which to
-#'     detect the output extension.
-#'
-#' @return A character vector representing the name of the constructed output
-#'     function. If the output type or extension is not supported, the function
-#'     will throw an error.
-#'
-#' @examples
-#' my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
-#' my_path <- 'output.xlsx'
-#' construct_output_function(my_ggplot, my_path)
-#'
-
-

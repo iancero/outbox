@@ -25,8 +25,11 @@ internally by docx-specific export functions (e.g., \code{ggplot_to_docx})
 }
 \examples{
 
+library(outbox)
+
 # Example of internal call that might be made by ggplot_to_docx()
 word_doc <- officer::read_docx()
 caption <- 'This is a sample caption.'
 append_caption_docx(word_doc, caption)
+
 }

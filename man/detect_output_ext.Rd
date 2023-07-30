@@ -28,7 +28,9 @@ a convenience function, in case the user needs to debug something
 their output objects internally).
 }
 \examples{
-path <- "example.xlsx"
+library(outbox)
+
+path <- 'example.xlsx'
 detect_output_ext(path)
 
 }

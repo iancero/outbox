@@ -27,6 +27,8 @@ a convenience function, in case the user needs to debug something
 their output objects internally).
 }
 \examples{
+library(outbox)
+
 my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
 detect_output_type(my_ggplot)
 

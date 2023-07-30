@@ -28,6 +28,8 @@ internally by xlsx-specific export functions (e.g., \code{ggplot_to_xlsx})
 }
 \examples{
 
+library(outbox)
+
 # Example of internal call that might be made by ggplot_to_xlsx()
 output_wb <- openxlsx::createWorkbook()
 sheet_name <- 'Sheet1'

@@ -26,13 +26,15 @@ the appropriate specific output function call (e.g.,
 It constructs the name of the specific output function to be used (e.g.,
 \code{gtsummary_to_docx}), based on the detected output type and output
 extension. The output function name is in the format
-"{output_type}\emph{to}{output_ext}".
+'{output_type}\emph{to}{output_ext}'.
 
 This function is intended for internal use only. It is not exported to the
 end user.
 }
 \examples{
+library(outbox)
+
 my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
-my_path <- "output.xlsx"
+my_path <- 'output.xlsx'
 construct_output_function(my_ggplot, my_path)
 }

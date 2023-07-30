@@ -37,6 +37,8 @@ last_path <- function() {
 #' their output objects internally).
 #'
 #' @examples
+#' library(outbox)
+#'
 #' my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
 #' detect_output_type(my_ggplot)
 #'
@@ -81,7 +83,9 @@ detect_output_type <- function(x){
 #' the function will throw an error.
 #'
 #' @examples
-#' path <- "example.xlsx"
+#' library(outbox)
+#'
+#' path <- 'example.xlsx'
 #' detect_output_ext(path)
 #'
 #' @export
@@ -120,7 +124,7 @@ detect_output_ext <- function(path){
 #' It constructs the name of the specific output function to be used (e.g.,
 #' \code{gtsummary_to_docx}), based on the detected output type and output
 #' extension. The output function name is in the format
-#' "{output_type}_to_{output_ext}".
+#' '{output_type}_to_{output_ext}'.
 #'
 #' This function is intended for internal use only. It is not exported to the
 #' end user.
@@ -130,8 +134,10 @@ detect_output_ext <- function(path){
 #'         will throw an error.
 #'
 #' @examples
+#' library(outbox)
+#'
 #' my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
-#' my_path <- "output.xlsx"
+#' my_path <- 'output.xlsx'
 #' construct_output_function(my_ggplot, my_path)
 construct_output_function <- function(x, path){
   output_type <- detect_output_type(x)
@@ -266,7 +272,7 @@ write_output <- function(x, path = NULL, label = FALSE, caption = NULL,
   if (is.null(path)) {
 
     if (is.null(last_path())) {
-      stop("No path provided and no last path stored.")
+      stop('No path provided and no last path stored.')
     }
 
     path <- last_path()
