@@ -7,6 +7,9 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/iancero/outbox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/iancero/outbox/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/iancero/outbox/branch/main/graph/badge.svg)](https://app.codecov.io/gh/iancero/outbox?branch=main)
 <!-- badges: end -->
 
 Many data analysis outputs need to leave the R ecosystem shortly after

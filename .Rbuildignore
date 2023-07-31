@@ -4,3 +4,5 @@
 ^test_dir$
 ^practice\.Rmd$
 ^README\.Rmd$
+^\.github$
+^codecov\.yml$

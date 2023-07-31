@@ -41,19 +41,15 @@ create_docx <- function(path, toc = TRUE) {
 #'   outbox:::append_caption_docx(caption)
 append_caption_docx <- function(word_doc, caption){
   if (!is.null(caption)){
-    output_caption <- officer::block_caption(
-      label = as.character(caption),
-      style = 'Normal',
-      autonum = NULL)
-
     word_doc <- word_doc |>
       officer::body_add_par(' ') |>
       officer::body_add_par(' ') |>
-      officer::body_add_caption(output_caption)
+      officer::body_add_par(caption, style = 'Normal')
   }
 
   word_doc
 }
+
 
 
 #' @rdname write_output
