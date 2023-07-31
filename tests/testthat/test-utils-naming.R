@@ -1,5 +1,5 @@
 test_that(
-  desc = 'append_date() appends dates correctly to file paths',
+  desc = 'append_date() appends dates to the correct location in the file path',
   code = {
     old_path <- 'my_dir/file_name.ext'
     today <- as.character(Sys.Date())
