@@ -1,3 +1,30 @@
+#' Create an empty Word Document (docx)
+#'
+#' This function creates an empty Word Document (docx) at the specified path. It is designed
+#' to be used internally for initializing docx files before adding content or sections.
+#'
+#' @param path The file path where the Word Document (docx) will be created.
+#'
+#' @param toc Logical, indicating whether to include a Table of Contents (TOC) in the
+#'            created document. The default is TRUE.
+#'
+#' @details This function creates an empty Word Document (docx) and returns the document
+#' object, which can be used to add content, paragraphs, sections, or Table of Contents (TOC).
+#' By default, a Table of Contents (TOC) is included in the document.
+#'
+#' @return An invisible Word Document (docx) object representing the empty Word Document.
+#'
+#' @examples
+#' # Create an empty Word Document (docx) named 'example.docx'
+#' create_docx('example.docx')
+#'
+#' # Create an empty Word Document (docx) with Table of Contents (TOC) disabled
+#' create_docx('example_without_toc.docx', toc = FALSE)
+#'
+#' @keywords internal
+#'
+#' @family docx-related functions
+#'
 create_docx <- function(path, toc = TRUE) {
   word_doc <- officer::read_docx() |>
     officer::body_add_par(
@@ -18,6 +45,7 @@ create_docx <- function(path, toc = TRUE) {
 }
 
 
+
 #' Append Caption to Word Document
 #'
 #' This function appends a caption to a Word document. It is designed to be used
@@ -33,6 +61,8 @@ create_docx <- function(path, toc = TRUE) {
 #' @return The modified Word document object with the caption appended (if
 #'         provided) or the original Word document object if no caption is
 #'         provided.
+#'
+#' @family docx-related functions
 #'
 #' @examples
 #' # Example of internal call that might be made by ggplot_to_docx()
@@ -53,6 +83,7 @@ append_caption_docx <- function(word_doc, caption){
 
 
 #' @rdname write_output
+#' @family docx-related functions
 #' @export
 gtsummary_to_docx <- function(
     x, path, label = FALSE, caption = NULL, append = TRUE, toc = TRUE,
@@ -99,6 +130,7 @@ gtsummary_to_docx <- function(
 
 
 #' @rdname write_output
+#' @family docx-related functions
 #' @export
 ggplot_to_docx <- function(
     x, path, label = FALSE, caption = NULL, append = TRUE, toc = TRUE,

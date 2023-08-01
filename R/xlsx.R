@@ -1,3 +1,23 @@
+#' Create an empty XLSX file
+#'
+#' This function creates an empty XLSX file at the specified path. It is designed
+#' to be used internally for initializing XLSX files before adding data or sheets.
+#'
+#' @param path The file path where the XLSX file will be created.
+#'
+#' @details This function creates an empty XLSX file and returns the workbook
+#' object, which can be used to add data or sheets to the file.
+#'
+#' @return An invisible workbook object representing the empty XLSX file.
+#'
+#' @examples
+#' # Create an empty XLSX file named 'example.xlsx'
+#' create_xlsx('example.xlsx')
+#'
+#' @keywords internal
+#'
+#' @family xlsx-related functions
+#'
 create_xlsx <- function(path) {
 
   # throws warning about empty workbook
@@ -12,10 +32,11 @@ create_xlsx <- function(path) {
 }
 
 
+
 #' Append Caption to XLSX Sheet
 #'
 #' This function appends a caption to an XLSX sheet. It is designed to be used
-#' internally by xlsx-specific export functions (e.g., \code{ggplot_to_xlsx})
+#' internally by xlsx-related export functions (e.g., \code{ggplot_to_xlsx})
 #'
 #' @param output_wb The output workbook object to which the caption will be
 #'                  appended.
@@ -30,6 +51,8 @@ create_xlsx <- function(path) {
 #' @return The modified output workbook object with the caption appended (if
 #'         provided) or the original output workbook object if no caption is
 #'         provided.
+#'
+#' @family xlsx-related functions
 #'
 #' @examples
 #' # Example of internal call that might be made by ggplot_to_xlsx()
@@ -59,6 +82,7 @@ append_caption_xlsx <- function(output_wb, sheet_name, caption){
 
 
 #' @rdname write_output
+#' @family xlsx-related functions
 #' @export
 gtsummary_to_xlsx <- function(x, path, label = FALSE, caption = NULL,
                               append = TRUE) {
@@ -96,10 +120,8 @@ gtsummary_to_xlsx <- function(x, path, label = FALSE, caption = NULL,
 
 
 
-
-
-
 #' @rdname write_output
+#' @family xlsx-related functions
 #' @export
 ggplot_to_xlsx <- function(
     x, path, label = FALSE, caption = NULL, append = TRUE, width = 6,

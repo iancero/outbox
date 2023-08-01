@@ -173,3 +173,29 @@ tbl_2 <- mtcars |>
 # add an additional table to that same path, with append = TRUE
 write_output(tbl_2, my_outbox, label = FALSE, append = TRUE)
 }
+\seealso{
+Other write_output-related functions: 
+\code{\link{construct_output_function}()},
+\code{\link{detect_output_ext}()},
+\code{\link{detect_output_type}()},
+\code{\link{last_path}()}
+
+Other docx-related functions: 
+\code{\link{append_caption_docx}()},
+\code{\link{create_docx}()}
+
+Other docx-related functions: 
+\code{\link{append_caption_docx}()},
+\code{\link{create_docx}()}
+
+Other xlsx-related functions: 
+\code{\link{append_caption_xlsx}()},
+\code{\link{create_xlsx}()}
+
+Other xlsx-related functions: 
+\code{\link{append_caption_xlsx}()},
+\code{\link{create_xlsx}()}
+}
+\concept{docx-related functions}
+\concept{write_output-related functions}
+\concept{xlsx-related functions}
