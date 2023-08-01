@@ -3,6 +3,7 @@
 export(append_date)
 export(detect_output_ext)
 export(detect_output_type)
+export(flextable_to_docx)
 export(ggplot_to_docx)
 export(ggplot_to_xlsx)
 export(gtsummary_to_docx)

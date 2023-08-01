@@ -4,6 +4,7 @@
 \alias{write_output}
 \alias{gtsummary_to_docx}
 \alias{ggplot_to_docx}
+\alias{flextable_to_docx}
 \alias{gtsummary_to_xlsx}
 \alias{ggplot_to_xlsx}
 \title{Write output to a document}
@@ -31,6 +32,16 @@ ggplot_to_docx(
   height = 5,
   width = 6,
   res = 300
+)
+
+flextable_to_docx(
+  x,
+  path,
+  label = FALSE,
+  caption = NULL,
+  append = TRUE,
+  toc = TRUE,
+  update_fields = FALSE
 )
 
 gtsummary_to_xlsx(x, path, label = FALSE, caption = NULL, append = TRUE)
@@ -173,3 +184,17 @@ tbl_2 <- mtcars |>
 # add an additional table to that same path, with append = TRUE
 write_output(tbl_2, my_outbox, label = FALSE, append = TRUE)
 }
+\seealso{
+Other docx-related functions: 
+\code{\link{append_caption_docx}()},
+\code{\link{create_docx}()}
+
+Other docx-related functions: 
+\code{\link{append_caption_docx}()},
+\code{\link{create_docx}()}
+
+Other docx-related functions: 
+\code{\link{append_caption_docx}()},
+\code{\link{create_docx}()}
+}
+\concept{docx-related functions}

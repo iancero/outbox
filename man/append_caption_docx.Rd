@@ -29,3 +29,9 @@ caption <- 'This is a sample caption.'
 word_doc <- officer::read_docx() |>
   outbox:::append_caption_docx(caption)
 }
+\seealso{
+Other docx-related functions: 
+\code{\link{create_docx}()},
+\code{\link{write_output}()}
+}
+\concept{docx-related functions}
