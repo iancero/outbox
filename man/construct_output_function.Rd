@@ -38,3 +38,12 @@ my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
 my_path <- 'output.xlsx'
 outbox:::construct_output_function(my_ggplot, my_path)
 }
+\seealso{
+Other write_output-related functions: 
+\code{\link{detect_output_ext}()},
+\code{\link{detect_output_type}()},
+\code{\link{last_path}()},
+\code{\link{write_output}()}
+}
+\concept{write_output-related functions}
+\keyword{internal}

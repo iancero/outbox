@@ -15,3 +15,11 @@ This function returns the last path used in a previous call to
 write_output(). If no path has been used yet, it returns NULL. It is desiged
 to be used in conjunction with \code{write_output()}.
 }
+\seealso{
+Other write_output-related functions: 
+\code{\link{construct_output_function}()},
+\code{\link{detect_output_ext}()},
+\code{\link{detect_output_type}()},
+\code{\link{write_output}()}
+}
+\concept{write_output-related functions}

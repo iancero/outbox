@@ -184,10 +184,7 @@ tbl_2 <- mtcars |>
 # add an additional table to that same path, with append = TRUE
 write_output(tbl_2, my_outbox, label = FALSE, append = TRUE)
 }
-\seealso{
-Other docx-related functions: 
-\code{\link{append_caption_docx}()},
-\code{\link{create_docx}()}
+
 
 Other docx-related functions: 
 \code{\link{append_caption_docx}()},
@@ -196,5 +193,3 @@ Other docx-related functions:
 Other docx-related functions: 
 \code{\link{append_caption_docx}()},
 \code{\link{create_docx}()}
-}
-\concept{docx-related functions}

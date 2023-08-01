@@ -33,3 +33,11 @@ my_ggplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = hp))
 detect_output_type(my_ggplot)
 
 }
+\seealso{
+Other write_output-related functions: 
+\code{\link{construct_output_function}()},
+\code{\link{detect_output_ext}()},
+\code{\link{last_path}()},
+\code{\link{write_output}()}
+}
+\concept{write_output-related functions}

@@ -34,3 +34,11 @@ path <- 'example.xlsx'
 detect_output_ext(path)
 
 }
+\seealso{
+Other write_output-related functions: 
+\code{\link{construct_output_function}()},
+\code{\link{detect_output_type}()},
+\code{\link{last_path}()},
+\code{\link{write_output}()}
+}
+\concept{write_output-related functions}

@@ -1,4 +1,5 @@
 outbox_env <- new.env(parent = emptyenv())
+assign('last_path', value = NULL, envir = outbox_env)
 
 #' Retrieve the last path used in write_output()
 #'
@@ -8,6 +9,8 @@ outbox_env <- new.env(parent = emptyenv())
 #'
 #' @return The last path used in \code{write_output()}, or \code{NULL} if no
 #' path has been used yet.
+#'
+#' @family write_output-related functions
 #'
 #' @export
 last_path <- function() {
@@ -35,6 +38,8 @@ last_path <- function() {
 #' a convenience function, in case the user needs to debug something
 #' (e.g., to understand how the \code{write_output()} function is assessing
 #' their output objects internally).
+#'
+#' @family write_output-related functions
 #'
 #' @examples
 #' library(outbox)
@@ -81,6 +86,8 @@ detect_output_type <- function(x){
 #' @return A character vector indicating the detected output extension. If the
 #' detected extension is not one of the supported extensions ('xlsx' or 'docx'),
 #' the function will throw an error.
+#'
+#' @family write_output-related functions
 #'
 #' @examples
 #' library(outbox)
@@ -132,6 +139,10 @@ detect_output_ext <- function(path){
 #' @return A character vector representing the name of the constructed output
 #'         function. If the output type or extension is not supported, the function
 #'         will throw an error.
+#'
+#' @keywords internal
+#'
+#' @family write_output-related functions
 #'
 #' @examples
 #' library(outbox)
@@ -244,6 +255,9 @@ construct_output_function <- function(x, path){
 #'
 #'
 #' @return (invisibly) The original, unmodified output object (\code{x})
+#'
+#' @family write_output-related functions
+#'
 #' @export
 #'
 #' @examples
