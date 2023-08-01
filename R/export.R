@@ -49,7 +49,7 @@ last_path <- function() {
 #'
 #' @export
 detect_output_type <- function(x){
-  supported_classes <- c('gtsummary', 'ggplot')
+  supported_classes <- supported('classes')
   detected_class <- which(supported_classes %in% class(x))
 
   if (length(detected_class) != 1) {
@@ -97,7 +97,7 @@ detect_output_type <- function(x){
 #'
 #' @export
 detect_output_ext <- function(path){
-  supported_exts <- c('xlsx', 'docx')
+  supported_exts <- supported('extensions')
   detected_ext <- which(supported_exts %in% tools::file_ext(path))
 
   if (length(detected_ext) != 1) {
