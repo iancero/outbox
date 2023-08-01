@@ -1,6 +1,6 @@
 Package: outbox
 Title: Basic Tools to Make the Data Analysis Workflow Similar to a Paper Workflow
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: 
     person("Cero", "Ian", , "ian_cero@urmc.rochester.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2862-0450"))
