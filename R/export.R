@@ -1,4 +1,5 @@
 outbox_env <- new.env(parent = emptyenv())
+assign('last_path', value = NULL, envir = outbox_env)
 
 #' Retrieve the last path used in write_output()
 #'
