@@ -15,11 +15,12 @@
 #' @return An invisible Word Document (docx) object representing the empty Word Document.
 #'
 #' @examples
+#'
 #' # Create an empty Word Document (docx) named 'example.docx'
-#' create_docx('example.docx')
+#' outbox:::create_docx('example.docx')
 #'
 #' # Create an empty Word Document (docx) with Table of Contents (TOC) disabled
-#' create_docx('example_without_toc.docx', toc = FALSE)
+#' outbox:::create_docx('example_without_toc.docx', toc = FALSE)
 #'
 #' @keywords internal
 #'

@@ -80,7 +80,7 @@ test_that('detect_output_ext correctly detects xlsx extension', {
 test_that('detect_output_ext correctly detects docx extension', {
 
   # create a sample path with docx extension
-  path <- 'example.docx'
+  path <- tempfile(fileext = '.docx')
 
   # call detect_output_ext to detect the extension
   result <- detect_output_ext(path)
@@ -110,7 +110,7 @@ test_that(
       Value = c(10, 20, 15, 25)
     )
     tbl <- tbl_summary(data)
-    path <- 'output.xlsx'
+    path <- tempfile(fileext = '.xlsx')
 
     # call construct_output_function to construct the function name
     result <- construct_output_function(tbl, path)
@@ -130,7 +130,7 @@ test_that(
       hp = c(110, 110, 93, 93)
     )
     p <- ggplot(data, aes(x = mpg, y = hp)) + geom_point()
-    path <- 'output.docx'
+    path <- tempfile(fileext = '.docx')
 
     # call construct_output_function to construct the function name
     result <- construct_output_function(p, path)
@@ -149,7 +149,7 @@ test_that(
       Group = c('A', 'A', 'B', 'B'),
       Value = c(10, 20, 15, 25)
     )
-    path <- 'output.xlsx'
+    path <- tempfile(fileext = '.xlsx')
 
     # call construct_output_function with an unsupported output type
     expect_error(construct_output_function(data, path))
@@ -382,4 +382,126 @@ test_that(
     expect_no_error(result)
 })
 
+
+
+
+
+
+# ---------------------------------------------------------------------------------
+
+
+test_that("write_output appends output when append = TRUE", {
+
+  # create a sample gtsummary table and write it to an initial path with
+  # append = FALSE
+  library(gtsummary)
+
+  data <- data.frame(
+    Group = c("A", "A", "B", "B"),
+    Value = c(10, 20, 15, 25))
+
+  tbl1 <- tbl_summary(data)
+  initial_path <- tempfile(fileext = '.xlsx')
+  write_output(tbl1, initial_path, label = "Table 1")
+
+  # create another sample gtsummary table and write it to the same path with append = TRUE
+  data2 <- data.frame(
+    Group = c("C", "C", "D", "D"),
+    Value = c(30, 40, 35, 45))
+  tbl2 <- tbl_summary(data2)
+  write_output(tbl2, initial_path, label = "Table 2", append = TRUE)
+
+  # check that the second table is correctly appended to the initial file
+  expect_equal(length(openxlsx::getSheetNames(initial_path)), 2)
+})
+
+test_that("write_output overwrites output when append = FALSE", {
+
+  # create a sample gtsummary table and write it to an initial path with
+  # append = FALSE
+  library(gtsummary)
+  data <- data.frame(
+    Group = c("A", "A", "B", "B"),
+    Value = c(10, 20, 15, 25)
+  )
+  tbl1 <- tbl_summary(data)
+  initial_path <- tempfile(fileext = '.xlsx')
+  write_output(tbl1, initial_path, label = "Table 1")
+
+  # create another sample gtsummary table and write it to the same path with
+  # append = FALSE
+  data2 <- data.frame(
+    Group = c("C", "C", "D", "D"),
+    Value = c(30, 40, 35, 45)
+  )
+  tbl2 <- tbl_summary(data2)
+  write_output(tbl2, initial_path, label = "Table 2", append = FALSE)
+
+  # check that the second table overwrites the initial file
+  sheet_names <- openxlsx::getSheetNames(initial_path)
+  expect_equal(sheet_names, 'Table 2')
+})
+
+
+
+test_that("write_output updates last_path when appending", {
+
+  # create a sample gtsummary table and write it to an initial path with
+  # append = FALSE
+  library(gtsummary)
+  data <- data.frame(
+    Group = c("A", "A", "B", "B"),
+    Value = c(10, 20, 15, 25)
+  )
+  tbl1 <- tbl_summary(data)
+  initial_path <- tempfile(fileext = '.xlsx')
+  write_output(tbl1, initial_path, label = "Table 1")
+
+  # create another sample gtsummary table and write it to the same path with
+  # append = TRUE
+  data2 <- data.frame(
+    Group = c("C", "C", "D", "D"),
+    Value = c(30, 40, 35, 45)
+  )
+  tbl2 <- tbl_summary(data2)
+  write_output(tbl2, initial_path, label = "Table 2", append = TRUE)
+
+  # check that the last_path is updated to the appended file path
+  expect_equal(last_path(), initial_path)
+})
+
+
+test_that("write_output throws an error for unsupported output types", {
+  # Create a sample data.frame (unsupported output type)
+  df <- data.frame(x = 1:5, y = letters[1:5])
+  path <- tempfile(fileext = '.xlsx')
+
+  # Call write_output with unsupported output type (data.frame)
+  expect_error(write_output(df, path))
+})
+
+test_that("write_output throws an error for unsupported output extensions", {
+  # Create a sample ggplot plot
+  library(ggplot2)
+  plot <- ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point()
+  path <- tempfile(fileext = '.txt')  # Unsupported extension (should be .xlsx or .docx)
+
+  # Call write_output with unsupported output extension (.txt)
+  expect_error(write_output(plot, path))
+})
+
+test_that("write_output correctly handles no label provided for xlsx output", {
+  # Create a sample gtsummary table and write it to a path without providing a label
+  library(gtsummary)
+  data <- data.frame(
+    Group = c("A", "A", "B", "B"),
+    Value = c(10, 20, 15, 25)
+  )
+  tbl <- tbl_summary(data)
+  path <- tempfile(fileext = '.xlsx')
+  write_output(tbl, path)
+
+  # Check that the sheet name is automatically set to "Sheet 1"
+  expect_equal(openxlsx::getSheetNames(path), "Sheet 1")
+})
 

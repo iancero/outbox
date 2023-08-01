@@ -22,7 +22,7 @@ object, which can be used to add data or sheets to the file.
 }
 \examples{
 # Create an empty XLSX file named 'example.xlsx'
-create_xlsx('example.xlsx')
+outbox:::create_xlsx('example.xlsx')
 
 }
 \seealso{

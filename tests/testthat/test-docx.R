@@ -1,5 +1,6 @@
 test_that('append_caption_docx() adds caption correctly when caption is provided', {
   library(officer)
+  library(dplyr)
 
   # Create a sample word document
   doc <- read_docx() |>
@@ -17,8 +18,8 @@ test_that('append_caption_docx() adds caption correctly when caption is provided
   # Is the caption is in the correct location, two blocks after the first line?
   expect_equal(
     object = docx_df |>
-      dplyr::filter(text == caption_text) |>
-      dplyr::pull(doc_index),
+      filter(text == caption_text) |>
+      pull(doc_index),
     expected = 4)
 })
 

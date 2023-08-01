@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' # Create an empty XLSX file named 'example.xlsx'
-#' create_xlsx('example.xlsx')
+#' outbox:::create_xlsx('example.xlsx')
 #'
 #' @keywords internal
 #'
