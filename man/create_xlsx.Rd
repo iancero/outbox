@@ -21,8 +21,10 @@ This function creates an empty XLSX file and returns the workbook
 object, which can be used to add data or sheets to the file.
 }
 \examples{
+\dontrun{
 # Create an empty XLSX file named 'example.xlsx'
 outbox:::create_xlsx('example.xlsx')
+}
 
 }
 \seealso{

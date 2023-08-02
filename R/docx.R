@@ -14,18 +14,19 @@
 #'
 #' @return An invisible Word Document (docx) object representing the empty Word Document.
 #'
+#' @keywords internal
+#'
+#' @family docx-related functions
+#'
 #' @examples
 #'
+#' \dontrun{
 #' # Create an empty Word Document (docx) named 'example.docx'
 #' outbox:::create_docx('example.docx')
 #'
 #' # Create an empty Word Document (docx) with Table of Contents (TOC) disabled
 #' outbox:::create_docx('example_without_toc.docx', toc = FALSE)
-#'
-#' @keywords internal
-#'
-#' @family docx-related functions
-#'
+#'}
 create_docx <- function(path, toc = TRUE) {
   word_doc <- officer::read_docx() |>
     officer::body_add_par(

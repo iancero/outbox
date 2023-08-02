@@ -10,13 +10,15 @@
 #'
 #' @return An invisible workbook object representing the empty XLSX file.
 #'
-#' @examples
-#' # Create an empty XLSX file named 'example.xlsx'
-#' outbox:::create_xlsx('example.xlsx')
-#'
 #' @keywords internal
 #'
 #' @family xlsx-related functions
+#'
+#' @examples
+#' \dontrun{
+#' # Create an empty XLSX file named 'example.xlsx'
+#' outbox:::create_xlsx('example.xlsx')
+#' }
 #'
 create_xlsx <- function(path) {
 

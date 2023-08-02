@@ -26,12 +26,13 @@ By default, a Table of Contents (TOC) is included in the document.
 }
 \examples{
 
+\dontrun{
 # Create an empty Word Document (docx) named 'example.docx'
 outbox:::create_docx('example.docx')
 
 # Create an empty Word Document (docx) with Table of Contents (TOC) disabled
 outbox:::create_docx('example_without_toc.docx', toc = FALSE)
-
+}
 }
 \seealso{
 Other docx-related functions: 
