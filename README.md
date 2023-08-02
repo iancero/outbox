@@ -70,10 +70,15 @@ new output there as it is created.
 ``` r
 my_outbox <- 'my_word_doc.docx'
 
-my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-  ggplot2::geom_point()
+plot_1 <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point()
 
-write_output(my_plot, my_outbox)
+plot_2 <- ggplot(mtcars, aes(wt)) +
+  geom_histogram()
+
+write_output(plot_1, my_outbox)
+write_output(plot_2, my_outbox)
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
 On subsequent calls, you can even drop the path argument for
@@ -154,7 +159,7 @@ library(gtsummary)
 trial_tbl <- trial |> 
   tbl_summary()
 
-xlsx_path <- tempfile(fileext = '.xlsx')
+xlsx_path <- 'my_excel_workbook.xlsx'
 
 trial_tbl |>
   gtsummary::as_hux_xlsx(file = xlsx_path)
@@ -166,7 +171,7 @@ argument for our target file (i.e., `file =` for `.xlsx` vs `path =` for
 `.docx`).
 
 ``` r
-docx_path <- tempfile(fileext = '.docx')
+docx_path <- 'my_word_doc.docx'
 
 trial_tbl |>
   gtsummary::as_flex_table() |>

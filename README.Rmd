@@ -67,10 +67,14 @@ Much like a physical outbox, the `write_output()` is also designed to simply app
 ```{r}
 my_outbox <- 'my_word_doc.docx'
 
-my_plot <- ggplot2::ggplot(mtcars, aes(wt, mpg)) +
-  ggplot2::geom_point()
+plot_1 <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point()
 
-write_output(my_plot, my_outbox)
+plot_2 <- ggplot(mtcars, aes(wt)) +
+  geom_histogram()
+
+write_output(plot_1, my_outbox)
+write_output(plot_2, my_outbox)
 ```
 
 On subsequent calls, you can even drop the path argument for convenience.
@@ -122,7 +126,7 @@ library(gtsummary)
 trial_tbl <- trial |> 
   tbl_summary()
 
-xlsx_path <- tempfile(fileext = '.xlsx')
+xlsx_path <- 'my_excel_workbook.xlsx'
 
 trial_tbl |>
   gtsummary::as_hux_xlsx(file = xlsx_path)
@@ -131,7 +135,7 @@ trial_tbl |>
 In contrast, when we want to send the same `gtsummary` table to a word document, we need two steps. We also need to work with a different argument for our target file (i.e., `file =` for `.xlsx` vs `path =` for `.docx`).
 
 ```{r}
-docx_path <- tempfile(fileext = '.docx')
+docx_path <- 'my_word_doc.docx'
 
 trial_tbl |>
   gtsummary::as_flex_table() |>
