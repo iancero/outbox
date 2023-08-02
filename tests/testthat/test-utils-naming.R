@@ -1,7 +1,6 @@
 test_that(
   desc = 'append_date() appends dates to the correct location in the file path',
   code = {
-    library(stringr)
 
     old_path <- 'my_dir/file_name.ext'
     today <- as.character(Sys.Date())
@@ -12,7 +11,7 @@ test_that(
 
     # is today in the right place - after the name, but before the extension?
     expect_equal(
-      object = str_split_1(new_path, today),
+      object = unlist(strsplit(new_path, today)),
       expected = c('my_dir/file_name_', '.ext'))
     }
 )
